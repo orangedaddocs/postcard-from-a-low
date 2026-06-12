@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DCA 110 · The Longest Sale Buys the Most Sats</title>
+<meta name="description" content="Stack an extra $110 a month, week, or day starting July 1, 2026, until Bitcoin touches its Power Law trendline. Four scenarios, four ending dates, four answers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF6EF;
+    --card: #FFFDF8;
+    --ink: #2A2118;
+    --body: #3A3328;
+    --muted: #6E6557;
+    --faint: #8A8174;
+    --line: #E7DFD2;
+    --terracotta: #C0532F;
+    --gold: #C7901B;
+    --plum: #7B4B94;
+    --gray: #6B7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--body);
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px 64px; }
+  .prose { max-width: 720px; margin: 0 auto; }
+  h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: clamp(30px, 5vw, 42px);
+    line-height: 1.15;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    margin-bottom: 14px;
+  }
+  .dek { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+  h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 26px;
+    color: var(--ink);
+    margin: 44px 0 14px;
+    letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 16px; }
+  ul { list-style: none; margin-bottom: 16px; }
+  ul li { padding-left: 22px; position: relative; margin-bottom: 12px; }
+  ul li::before { content: "–"; position: absolute; left: 2px; color: var(--terracotta); font-weight: 600; }
+  strong { color: var(--ink); }
+  a { color: var(--terracotta); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 40px auto; max-width: 720px; }
+  .keyline {
+    border-left: 3px solid var(--terracotta);
+    padding: 4px 0 4px 18px;
+    margin: 22px 0;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .sig { color: var(--faint); font-style: italic; margin-top: 28px; }
+
+  /* ---- Tool card ---- */
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 26px 22px 22px;
+    margin: 36px 0 12px;
+  }
+  .tool-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 4px;
+  }
+  .tool-sub { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 18px; }
+
+  /* Presets */
+  .picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+  .preset {
+    background: var(--cream); border: 2px solid var(--line); border-radius: 10px;
+    padding: 14px 8px 12px; cursor: pointer; text-align: center;
+    font-family: inherit; transition: border-color 0.12s;
+  }
+  .preset .amt {
+    display: block; font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1.1;
+  }
+  .preset .cad { display: block; font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .preset.on { border-color: var(--terracotta); background: #FBEFE8; }
+  .preset.on .amt { color: var(--terracotta); }
+  .custom {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    font-size: 14px; color: var(--muted); margin-bottom: 4px;
+  }
+  .custom input, .custom select {
+    font-family: inherit; font-size: 15px; color: var(--ink);
+    background: var(--cream); border: 2px solid var(--line); border-radius: 8px;
+    padding: 6px 10px; outline: none;
+  }
+  .custom input { width: 110px; }
+  .custom input:focus, .custom select:focus { border-color: var(--terracotta); }
+  .custom.on input, .custom.on select { border-color: var(--terracotta); }
+
+  #resultline { font-size: 15px; color: var(--body); margin: 18px 0 14px; }
+  #resultline b { color: var(--ink); }
+
+  /* Scenario cards */
+  .scards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .scard {
+    background: var(--cream); border: 1px solid var(--line); border-radius: 10px;
+    border-left-width: 4px; padding: 14px 16px 12px; cursor: pointer;
+    transition: box-shadow 0.12s;
+  }
+  .scard:hover { box-shadow: 0 2px 8px rgba(60,50,40,0.08); }
+  .scard.sel { box-shadow: 0 0 0 2px currentColor inset; }
+  .scard .sc-name { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+  .scard .sc-end { font-size: 12px; color: var(--faint); margin-bottom: 8px; }
+  .scard .sc-sats {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1.15;
+  }
+  .scard .sc-btc { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+  .scard .sc-row { font-size: 13px; color: var(--body); line-height: 1.6; }
+  .scard .sc-row b { color: var(--ink); }
+  .scard .sc-badge {
+    display: inline-block; margin-top: 8px; font-size: 11.5px; font-weight: 600;
+    color: var(--terracotta); background: #FBEFE8; border-radius: 6px; padding: 2px 8px;
+  }
+  .tap-hint { color: var(--faint); font-size: 11.5px; margin-top: 12px; }
+
+  /* ---- Chart card ---- */
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 26px 22px 18px;
+    margin: 24px 0 12px;
+  }
+  .chart-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 4px;
+  }
+  .chart-sub { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 12px; }
+  .legend button {
+    background: none; border: none; cursor: pointer; padding: 0;
+    display: flex; align-items: center; gap: 6px;
+    font-family: inherit; font-size: 12.5px; color: var(--body);
+  }
+  .legend button .swatch { width: 22px; height: 3px; border-radius: 2px; display: inline-block; }
+  .legend button.off { opacity: 0.35; }
+  #chartbox { position: relative; }
+  #chart { width: 100%; height: auto; display: block; }
+  #tooltip {
+    position: absolute; pointer-events: none; display: none;
+    background: var(--card); border: 1px solid var(--terracotta); border-radius: 8px;
+    padding: 10px 14px; font-size: 13px; white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(60,50,40,0.12); z-index: 5; line-height: 1.8;
+  }
+  #tooltip .tt-date { color: var(--terracotta); font-weight: 600; margin-bottom: 4px; }
+  .chart-foot { color: var(--faint); font-size: 11.5px; line-height: 1.6; margin-top: 10px; }
+  footer { color: var(--faint); font-size: 13px; text-align: center; margin-top: 56px; }
+  footer a { color: var(--faint); }
+
+  @media (max-width: 640px) {
+    .scards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="prose">
+    <p class="dek">July 2026 · A deterministic toy, not financial advice</p>
+    <h1>DCA 110: The Longest Sale Buys the Most Sats</h1>
+
+    <p>The <a href="../power-law-catch-up/">catch-up model</a> ended with one line: the fire sale is short, the discount is long, and the slowest recovery is the cheapest stack. This page is the receipts.</p>
+    <p>Here's the game. Starting <strong>July 1, 2026</strong>, you add an extra $110 to whatever you already stack. A month, a week, a day — your call. And you keep that extra going until spot climbs back to the Power Law trendline. Two AI models drew four glide paths back to the line, so there are four ending dates: December 2027, December 2028, June 2029, and December 2030.</p>
+    <p>Same anchor, same trendline, same math as the chart post. No spreadsheet required. Pick a number and look.</p>
+    <div class="keyline">The scenario that looks worst on a price chart hands you the most sats.</div>
+  </div>
+
+  <!-- ================= TOOL ================= -->
+  <div class="tool-card">
+    <div class="tool-title">Pick your extra stack</div>
+    <div class="tool-sub">On top of your normal DCA, starting July 1, 2026. Everything runs in your browser — nothing is stored, nothing is sent.</div>
+
+    <div class="picker" id="picker">
+      <button class="preset" data-cad="month"><span class="amt">$110</span><span class="cad">a month</span></button>
+      <button class="preset on" data-cad="week"><span class="amt">$110</span><span class="cad">a week</span></button>
+      <button class="preset" data-cad="day"><span class="amt">$110</span><span class="cad">a day</span></button>
+    </div>
+    <div class="custom" id="custom">
+      <span>Or your own:</span>
+      <span>$<input id="camt" type="number" min="1" max="10000" step="1" placeholder="amount"></span>
+      <span>every</span>
+      <select id="ccad">
+        <option value="day">day</option>
+        <option value="week" selected>week</option>
+        <option value="month">month</option>
+      </select>
+    </div>
+
+    <div id="resultline"></div>
+    <div class="scards" id="scards"></div>
+    <div class="tap-hint">Tap a scenario to highlight its line on the chart below. Tap again to reset.</div>
+  </div>
+
+  <!-- ================= CHART ================= -->
+  <div class="chart-card">
+    <div class="chart-title">Watch the cheap months do the work</div>
+    <div class="chart-sub">Cumulative extra Bitcoin stacked along each glide path. Lines climb steepest early, while spot sits deepest under the trendline, and each line stops the day its scenario touches 1.0x.</div>
+    <div class="legend" id="legend"></div>
+    <div id="chartbox">
+      <svg id="chart" viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="tooltip"></div>
+    </div>
+    <div class="chart-foot">Smooth glide paths, not price forecasts. Real DCA buys the chop, not the curve — months that dip below the glide path buy you more sats than this shows, months above it buy fewer. The shape is the signal: early dollars are the heavy dollars.</div>
+  </div>
+
+  <div class="prose">
+    <hr>
+    <h2>How the math works</h2>
+    <ul>
+      <li>Both AI models anchored at June 10, 2026: spot $61.5K, trendline $133K, a 0.46x multiplier.</li>
+      <li>Each scenario glides that multiplier smoothly back to 1.0x by its catch-up date. Spot on any day is the multiplier times the trendline.</li>
+      <li>Your extra $110 buys at that day's spot price — monthly on the 1st, weekly every seven days, daily every day — starting July 1, 2026, and ending the day the line touches trend.</li>
+      <li>On day one, July 1, 2026, that spot price sits around $63–64K depending on the scenario, since each glide path has climbed a little off the June 10 anchor at its own pace, against a July trendline of $135.5K.</li>
+      <li>The stack's final value is your Bitcoin times the trendline price on the catch-up date.</li>
+    </ul>
+    <p>Notice what the four cards have in common: the bear case takes in the most dollars, because the sale runs longest. That's not a trick. That's the whole point. More months under the line means more chances to buy under the line, and every one of those buys is valued at the line when the catch-up finally comes.</p>
+    <p>And the multiple is biggest in the bear case too, because the trendline itself keeps climbing for four and a half years while you're stacking under it. The longest wait pays the most per dollar <em>and</em> takes the most dollars. Proof of work, in fiat form.</p>
+
+    <hr>
+    <h2>What this isn't</h2>
+    <p>A prediction. Real prices will chop above and below every line here, and your real buys will land all over that chop. This is a deterministic toy built on smooth glide paths, so the numbers are exact for the model and approximate for reality. The model can also just be wrong — the catch-up post covers <a href="../power-law-catch-up/">what would break it</a>.</p>
+    <p>It's also not a dare to stack more than you can. The tool works the same at $110 a month or $20 a month. The point isn't the size of the number, it's seeing what <em>time under the line</em> does when the number is honestly yours.</p>
+
+    <hr>
+    <h2>The hardest-working dollars</h2>
+    <p>Every stacker carries a month they'd give anything to buy again. Maybe yours is November 2022, when the bottom printed near $15.5K and the whole world swore it was going lower, or maybe it's some gray afternoon in 2015 you didn't even notice while it was happening. And here's what I've finally made peace with: regret was never a knowledge problem. Everybody knew. The charts were free, the multiplier was public, and we still didn't stack, because knowing a window is open and feeling it are two very different things.</p>
+    <p>The hardest-working dollars never feel like it while you're stacking them. They feel terrifying, and that's exactly why they work so hard — the fear is the discount. A calm market at 1.0x sells you a fair price; a scared market at 0.46x sells you the same Bitcoin at half off and throws in the stomachache for free. 2015 felt like that, 2022 felt like that, and June 2026 feels like that this morning.</p>
+    <p>So this page does the one thing hindsight never could: it weighs your dollars before you spend them instead of after. In the slow scenario, an early dollar does the work of six late ones — a $110 buy in July 2026 carries a 7.75x multiple to trend, while the same buy in 2030 barely carries 1.2x. Stack weekly through the whole bear and the money you put in before 2028 is about a third of the dollars but more than half the Bitcoin. The cheap months aren't the consolation prize of the bear case — they're the prize.</p>
+    <p>Somewhere in 2030, somebody is going to look back at this exact summer — the fresh low, the scary headlines, the 0.46x — and either thank himself or rehearse the oldest line in Bitcoin: <em>I knew, and I didn't.</em> That's the only thing this calculator actually computes — which one of those two you're going to be.</p>
+    <p class="sig">Not advice. Just a dad doing the math out loud.<br>— Orange Dad</p>
+  </div>
+
+  <footer>
+    From the maker of <a href="https://genxbitcoin.io" target="_blank" rel="noopener">genxbitcoin.io</a> · Local-first · No tracking · Receipts always
+  </footer>
+</div>
+
+<script>
+(function () {
+  // ---- Model parameters (identical to power-law-catch-up) ----
+  var ANCHOR = Date.UTC(2026, 5, 10);
+  var M0 = 0.4625; // spot $61.5K / trendline $133.0K
+  var START = Date.UTC(2026, 6, 1); // DCA 110 kickoff: July 1, 2026
+  var X_END = Date.UTC(2031, 0, 1);
+  var DAY = 86400000;
+
+  var SCENARIOS = [
+    { key: "fast",  label: "Fastest (Claude bull · Dec 2027)", short: "Fastest · Claude bull", date: Date.UTC(2027, 11, 31), endLabel: "Dec 31, 2027", color: "#C7901B", width: 2.5, visible: true },
+    { key: "baseA", label: "Base, Claude (Dec 2028)",               short: "Base · Claude",         date: Date.UTC(2028, 11, 31), endLabel: "Dec 31, 2028", color: "#C0532F", width: 2,   visible: true },
+    { key: "baseB", label: "Base, ChatGPT (Jun 2029)",              short: "Base · ChatGPT",        date: Date.UTC(2029, 5, 30),  endLabel: "Jun 30, 2029", color: "#7B4B94", width: 2,   visible: true },
+    { key: "bear",  label: "Slowest (shared bear · Dec 2030)", short: "Slowest · shared bear", date: Date.UTC(2030, 11, 31), endLabel: "Dec 31, 2030", color: "#6B7280", width: 2,   visible: true }
+  ];
+
+  // B1M Power Law 1.0x trendline, first of month (USD).
+  var PL_1X = {
+    "2026-06": 131988, "2026-07": 135524, "2026-08": 139259, "2026-09": 143079,
+    "2026-10": 146857, "2026-11": 150846, "2026-12": 154792,
+    "2027-01": 158957, "2027-02": 163215, "2027-03": 167140, "2027-04": 171576,
+    "2027-05": 175961, "2027-06": 180588, "2027-07": 185161, "2027-08": 189985,
+    "2027-09": 194913, "2027-10": 199781, "2027-11": 204916, "2027-12": 209988,
+    "2028-01": 215337, "2028-02": 220798, "2028-03": 226008, "2028-04": 231690,
+    "2028-05": 237300, "2028-06": 243213, "2028-07": 249050, "2028-08": 255203,
+    "2028-09": 261479, "2028-10": 267674, "2028-11": 274201, "2028-12": 280642,
+    "2029-01": 287428, "2029-02": 294000, "2029-03": 301000, "2029-04": 308000,
+    "2029-05": 315000, "2029-06": 322000, "2029-07": 330000, "2029-08": 338000,
+    "2029-09": 345000, "2029-10": 353000, "2029-11": 361000, "2029-12": 369000,
+    "2030-01": 378000, "2030-02": 387000, "2030-03": 395000, "2030-04": 404000,
+    "2030-05": 412000, "2030-06": 422000, "2030-07": 431000, "2030-08": 441000,
+    "2030-09": 450000, "2030-10": 460000, "2030-11": 470000, "2030-12": 480000,
+    "2031-01": 491000
+  };
+
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+  function mkey(y, m) { return y + "-" + pad2(m + 1); }
+
+  // Trendline on any day: linear interpolation between first-of-month values.
+  function plAt(t) {
+    var d = new Date(t);
+    var y = d.getUTCFullYear(), m = d.getUTCMonth();
+    var t0 = Date.UTC(y, m, 1);
+    var y1 = m === 11 ? y + 1 : y, m1 = (m + 1) % 12;
+    var t1 = Date.UTC(y1, m1, 1);
+    var v0 = PL_1X[mkey(y, m)], v1 = PL_1X[mkey(y1, m1)];
+    if (v0 == null) return v1;
+    if (v1 == null) return v0;
+    return v0 + (v1 - v0) * (t - t0) / (t1 - t0);
+  }
+
+  function mult(t, catchup) {
+    if (t >= catchup) return 1.0;
+    var f = (t - ANCHOR) / (catchup - ANCHOR);
+    return Math.pow(M0, 1 - f);
+  }
+
+  function spotAt(t, catchup) { return mult(t, catchup) * plAt(t); }
+
+  function buyDates(cadence, endTs) {
+    var out = [], t;
+    if (cadence === "month") {
+      var y = 2026, m = 6;
+      t = Date.UTC(y, m, 1);
+      while (t <= endTs) {
+        out.push(t);
+        m++; if (m === 12) { m = 0; y++; }
+        t = Date.UTC(y, m, 1);
+      }
+    } else {
+      var step = cadence === "week" ? 7 * DAY : DAY;
+      for (t = START; t <= endTs; t += step) out.push(t);
+    }
+    return out;
+  }
+
+  function simulate(amount, cadence, sc) {
+    var dates = buyDates(cadence, sc.date);
+    var sats = 0, cum = [];
+    for (var i = 0; i < dates.length; i++) {
+      sats += amount / spotAt(dates[i], sc.date) * 1e8;
+      cum.push({ t: dates[i], sats: sats });
+    }
+    var invested = amount * dates.length;
+    var endVal = sats / 1e8 * plAt(sc.date);
+    return { sats: sats, invested: invested, endVal: endVal, multiple: endVal / invested, buys: dates.length, cum: cum };
+  }
+
+  // ---- Formatting ----
+  function fmtUSD(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
+  function fmtBTC(n) {
+    var btc = n / 1e8;
+    var d = btc >= 1 ? 2 : btc >= 0.1 ? 3 : 4;
+    return btc.toFixed(d) + " BTC";
+  }
+  var CAD_WORD = { day: "day", week: "week", month: "month" };
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  // ---- State ----
+  var amount = 110, cadence = "week", highlight = null;
+  var results = {};
+
+  // ---- Inputs ----
+  var presets = Array.prototype.slice.call(document.querySelectorAll(".preset"));
+  var customBox = document.getElementById("custom");
+  var camt = document.getElementById("camt");
+  var ccad = document.getElementById("ccad");
+
+  presets.forEach(function (b) {
+    b.addEventListener("click", function () {
+      amount = 110;
+      cadence = b.getAttribute("data-cad");
+      camt.value = "";
+      render();
+    });
+  });
+  function onCustom() {
+    var v = parseFloat(camt.value);
+    if (!isFinite(v) || v <= 0) return; // keep last good state until a real number arrives
+    amount = Math.min(10000, Math.max(1, v));
+    cadence = ccad.value;
+    render();
+  }
+  camt.addEventListener("input", onCustom);
+  ccad.addEventListener("change", function () { if (camt.value) onCustom(); else { cadence = ccad.value; } });
+
+  function syncInputs() {
+    var customOn = !!camt.value;
+    presets.forEach(function (b) {
+      b.classList.toggle("on", !customOn && b.getAttribute("data-cad") === cadence && amount === 110);
+    });
+    customBox.classList.toggle("on", customOn);
+  }
+
+  // ---- Scenario cards ----
+  var scardsEl = document.getElementById("scards");
+  var resultline = document.getElementById("resultline");
+
+  function renderCards() {
+    var cadTxt = cadence === "day" ? "every day" : cadence === "week" ? "every week" : "every month";
+    resultline.innerHTML = "An extra <b>" + fmtUSD(amount) + " " + cadTxt +
+      "</b> from July 1, 2026, until each line touches the trendline:";
+    var html = "";
+    SCENARIOS.forEach(function (s) {
+      var r = results[s.key];
+      html += '<div class="scard' + (highlight === s.key ? " sel" : "") + '" data-key="' + s.key +
+        '" style="border-left-color:' + s.color + ";color:" + s.color + '">' +
+        '<div class="sc-name" style="color:' + s.color + '">' + s.short + "</div>" +
+        '<div class="sc-end">ends ' + s.endLabel + " · " + r.buys + " buys · " + fmtUSD(r.invested) + " in</div>" +
+        '<div class="sc-sats">' + fmtBTC(r.sats) + "</div>" +
+        '<div class="sc-row">Worth <b>' + fmtUSD(r.endVal) + "</b> at trend · <b>" +
+        r.multiple.toFixed(2) + "x</b> your money</div>" +
+        (s.key === "bear" ? '<div class="sc-badge">Most months under the line. Most Bitcoin.</div>' : "") +
+        "</div>";
+    });
+    scardsEl.innerHTML = html;
+    Array.prototype.slice.call(scardsEl.children).forEach(function (el) {
+      el.addEventListener("click", function () {
+        var k = el.getAttribute("data-key");
+        highlight = highlight === k ? null : k;
+        renderCards();
+        styleLines();
+      });
+    });
+  }
+
+  // ---- Chart ----
+  var W = 920, H = 470;
+  var ML = 64, MR = 18, MT = 30, MB = 32;
+  var PW = W - ML - MR, PH = H - MT - MB;
+  function X(t) { return ML + (t - START) / (X_END - START) * PW; }
+
+  var chartEl = document.getElementById("chart");
+  var monthsAxis = [];
+  (function () {
+    for (var y = 2026; y <= 2031; y++) {
+      for (var m = 0; m < 12; m++) {
+        if (y === 2026 && m < 6) continue;
+        if (y === 2031 && m > 0) break;
+        monthsAxis.push(Date.UTC(y, m, 1));
+      }
+    }
+  })();
+
+  function niceCeil(v) {
+    var p = Math.pow(10, Math.floor(Math.log(v) / Math.LN10));
+    var u = v / p;
+    var n = u <= 1 ? 1 : u <= 2 ? 2 : u <= 2.5 ? 2.5 : u <= 5 ? 5 : 10;
+    return n * p;
+  }
+
+  var yMax = 1; // set in renderChart
+  function Y(v) { return MT + (1 - v / yMax) * PH; }
+
+  function btcTick(v) {
+    var step = yMax / 5 / 1e8;
+    var d = step >= 1 ? 1 : step >= 0.1 ? 2 : step >= 0.01 ? 3 : 4;
+    return (v / 1e8).toFixed(d);
+  }
+
+  // Monthly sample of cumulative sats per scenario, for drawing + tooltip.
+  function samplePts(sc) {
+    var r = results[sc.key], pts = [], ci = 0, sats = 0;
+    for (var i = 0; i < monthsAxis.length; i++) {
+      var t = monthsAxis[i];
+      if (t > sc.date) break;
+      while (ci < r.cum.length && r.cum[ci].t <= t) { sats = r.cum[ci].sats; ci++; }
+      pts.push({ t: t, sats: sats });
+    }
+    pts.push({ t: sc.date, sats: r.sats }); // exact endpoint
+    return pts;
+  }
+
+  function renderChart() {
+    var maxSats = 0;
+    SCENARIOS.forEach(function (s) { maxSats = Math.max(maxSats, results[s.key].sats); });
+    yMax = niceCeil(maxSats * 1.08);
+
+    var svg = [];
+    // grid + y labels (5 divisions)
+    for (var g = 0; g <= 5; g++) {
+      var gv = yMax * g / 5, gy = Y(gv);
+      svg.push('<line x1="' + ML + '" y1="' + gy + '" x2="' + (ML + PW) + '" y2="' + gy + '" stroke="#E7DFD2" stroke-dasharray="2 4"/>');
+      svg.push('<text x="' + (ML - 8) + '" y="' + (gy + 4) + '" text-anchor="end" fill="#6E6557" font-size="12" font-family="IBM Plex Sans, sans-serif">' + btcTick(gv) + "</text>");
+    }
+    // x year ticks
+    for (var yr = 2027; yr <= 2031; yr++) {
+      var xt = X(Date.UTC(yr, 0, 1));
+      svg.push('<text x="' + xt + '" y="' + (MT + PH + 22) + '" text-anchor="middle" fill="#6E6557" font-size="12" font-family="IBM Plex Sans, sans-serif">' + yr + "</text>");
+    }
+    // axis caption
+    svg.push('<text x="' + (ML + 4) + '" y="' + (MT - 12) + '" fill="#8A8174" font-size="11.5" font-weight="700" letter-spacing="0.06em" font-family="IBM Plex Sans, sans-serif">EXTRA BTC STACKED</text>');
+
+    // scenario lines + end dots
+    SCENARIOS.forEach(function (s) {
+      var pts = samplePts(s), d = "";
+      for (var p = 0; p < pts.length; p++) {
+        d += (p === 0 ? "M" : "L") + X(pts[p].t).toFixed(1) + " " + Y(pts[p].sats).toFixed(1) + " ";
+      }
+      var last = pts[pts.length - 1];
+      svg.push('<g id="line-' + s.key + '">' +
+        '<path d="' + d + '" fill="none" stroke="' + s.color + '" stroke-width="' + s.width + '" stroke-linejoin="round" stroke-linecap="round"/>' +
+        '<circle cx="' + X(last.t).toFixed(1) + '" cy="' + Y(last.sats).toFixed(1) + '" r="4.5" fill="' + s.color + '"/>' +
+        "</g>");
+    });
+
+    svg.push('<line id="xhair" x1="0" y1="' + MT + '" x2="0" y2="' + (MT + PH) + '" stroke="#B5AB9B" stroke-width="1" visibility="hidden"/>');
+    svg.push('<rect id="capture" x="' + ML + '" y="' + MT + '" width="' + PW + '" height="' + PH + '" fill="transparent"/>');
+    chartEl.innerHTML = svg.join("");
+    styleLines();
+  }
+
+  function styleLines() {
+    SCENARIOS.forEach(function (s) {
+      var g = document.getElementById("line-" + s.key);
+      if (!g) return;
+      g.style.display = s.visible ? "" : "none";
+      g.style.opacity = highlight && highlight !== s.key ? 0.18 : 1;
+    });
+  }
+
+  // ---- Legend ----
+  var legend = document.getElementById("legend");
+  SCENARIOS.forEach(function (s) {
+    var b = document.createElement("button");
+    b.innerHTML = '<span class="swatch" style="background:' + s.color + '"></span><span>' + s.label + "</span>";
+    b.addEventListener("click", function () {
+      s.visible = !s.visible;
+      b.classList.toggle("off", !s.visible);
+      styleLines();
+    });
+    legend.appendChild(b);
+  });
+
+  // ---- Tooltip ----
+  var box = document.getElementById("chartbox");
+  var tip = document.getElementById("tooltip");
+
+  function showTip(evt) {
+    var rect = chartEl.getBoundingClientRect();
+    var scale = W / rect.width;
+    var mx = (evt.clientX - rect.left) * scale;
+    if (mx < ML || mx > ML + PW) { hideTip(); return; }
+    var frac = (mx - ML) / PW;
+    var idx = Math.round(frac * (monthsAxis.length - 1));
+    idx = Math.max(0, Math.min(monthsAxis.length - 1, idx));
+    var t = monthsAxis[idx];
+    var dt = new Date(t);
+    var html = '<div class="tt-date">' + MONTHS[dt.getUTCMonth()] + " " + dt.getUTCFullYear() + "</div>";
+    SCENARIOS.forEach(function (s) {
+      if (!s.visible) return;
+      var r = results[s.key];
+      if (t > s.date) {
+        html += '<div style="color:' + s.color + '">' + s.short + ": <b>" + fmtBTC(r.sats) + " · at trend</b></div>";
+      } else {
+        var sats = 0;
+        for (var i = 0; i < r.cum.length && r.cum[i].t <= t; i++) sats = r.cum[i].sats;
+        html += '<div style="color:' + s.color + '">' + s.short + ": <b>" + fmtBTC(sats) + "</b></div>";
+      }
+    });
+    tip.innerHTML = html;
+    tip.style.display = "block";
+
+    var xhair = document.getElementById("xhair");
+    xhair.setAttribute("x1", X(t));
+    xhair.setAttribute("x2", X(t));
+    xhair.setAttribute("visibility", "visible");
+
+    var px = X(t) / scale;
+    var bw = box.clientWidth, tw = tip.offsetWidth;
+    var left = px + 14;
+    if (left + tw > bw - 4) left = px - tw - 14;
+    if (left < 4) left = 4;
+    tip.style.left = left + "px";
+    tip.style.top = Math.max(4, (evt.clientY - box.getBoundingClientRect().top) - 30) + "px";
+  }
+  function hideTip() {
+    tip.style.display = "none";
+    var xhair = document.getElementById("xhair");
+    if (xhair) xhair.setAttribute("visibility", "hidden");
+  }
+  chartEl.addEventListener("mousemove", showTip);
+  chartEl.addEventListener("mouseleave", hideTip);
+  chartEl.addEventListener("touchstart", function (e) { if (e.touches[0]) showTip(e.touches[0]); }, { passive: true });
+  chartEl.addEventListener("touchmove", function (e) { if (e.touches[0]) showTip(e.touches[0]); }, { passive: true });
+  chartEl.addEventListener("touchend", hideTip);
+
+  // ---- Master render ----
+  function render() {
+    SCENARIOS.forEach(function (s) { results[s.key] = simulate(amount, cadence, s); });
+    syncInputs();
+    renderCards();
+    renderChart();
+  }
+  render();
+})();
+</script>
+</body>
+</html>

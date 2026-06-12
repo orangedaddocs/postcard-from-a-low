@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two AI Models, One Trendline · How Long Does the Discount Last?</title>
+<meta name="description" content="Bitcoin sits at 0.46x of its Power Law trendline. Two AI models, four catch-up scenarios, one question: how long does the discount last?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF6EF;
+    --card: #FFFDF8;
+    --ink: #2A2118;
+    --body: #3A3328;
+    --muted: #6E6557;
+    --faint: #8A8174;
+    --line: #E7DFD2;
+    --terracotta: #C0532F;
+    --gold: #C7901B;
+    --plum: #7B4B94;
+    --gray: #6B7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--body);
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px 64px; }
+  .prose { max-width: 720px; margin: 0 auto; }
+  h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: clamp(30px, 5vw, 42px);
+    line-height: 1.15;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    margin-bottom: 14px;
+  }
+  .dek { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+  h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 26px;
+    color: var(--ink);
+    margin: 44px 0 14px;
+    letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 16px; }
+  ul { list-style: none; margin-bottom: 16px; }
+  ul li { padding-left: 22px; position: relative; margin-bottom: 12px; }
+  ul li::before { content: "–"; position: absolute; left: 2px; color: var(--terracotta); font-weight: 600; }
+  strong { color: var(--ink); }
+  a { color: var(--terracotta); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 40px auto; max-width: 720px; }
+  .keyline {
+    border-left: 3px solid var(--terracotta);
+    padding: 4px 0 4px 18px;
+    margin: 22px 0;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .sig { color: var(--faint); font-style: italic; margin-top: 28px; }
+
+  /* ---- Chart card ---- */
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 26px 22px 18px;
+    margin: 36px 0 12px;
+  }
+  .chart-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 4px;
+  }
+  .chart-sub { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 12px; }
+  .legend button {
+    background: none; border: none; cursor: pointer; padding: 0;
+    display: flex; align-items: center; gap: 6px;
+    font-family: inherit; font-size: 12.5px; color: var(--body);
+  }
+  .legend button .swatch { width: 22px; height: 3px; border-radius: 2px; display: inline-block; }
+  .legend button.off { opacity: 0.35; }
+  #chartbox { position: relative; }
+  #chart { width: 100%; height: auto; display: block; }
+  #tooltip {
+    position: absolute; pointer-events: none; display: none;
+    background: var(--card); border: 1px solid var(--terracotta); border-radius: 8px;
+    padding: 10px 14px; font-size: 13px; white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(60,50,40,0.12); z-index: 5; line-height: 1.8;
+  }
+  #tooltip .tt-date { color: var(--terracotta); font-weight: 600; margin-bottom: 4px; }
+  #tooltip .tt-pl { color: var(--faint); margin-top: 4px; font-size: 11.5px; }
+  .chart-foot { color: var(--faint); font-size: 11.5px; line-height: 1.6; margin-top: 10px; }
+  footer { color: var(--faint); font-size: 13px; text-align: center; margin-top: 56px; }
+  footer a { color: var(--faint); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="prose">
+    <p class="dek">June 2026 · A planning note, not financial advice</p>
+    <h1>Two AI Models, One Trendline: How Long Does the Discount Last?</h1>
+
+    <p>Bitcoin topped near $126K in October 2025. Since then it's fallen over and over. On June 10, 2026, we printed a fresh low around $61,500. That's half the paper value gone in eight months.</p>
+    <p>So what does that mean for the Power Law trendline? Two AI models, Claude and ChatGPT, got the same question independently. Same data, same starting point, no peeking at each other's homework: we're way below the trendline right now. If the line holds, when do we get back to it?</p>
+    <p>Before the answers, here's the thing. This is technically a price model. But that's not what it's for.</p>
+    <p><strong>What it really measures is time.</strong></p>
+    <p>How long does Bitcoin stay below its trendline, and what does that window mean if you're still stacking? If you believe the line holds, time below it isn't bad news. It's the sale. The model just tells you how long the sale might run.</p>
+    <p>That reframe changes how you read everything below.</p>
+  </div>
+
+  <!-- ================= CHART ================= -->
+  <div class="chart-card">
+    <div class="chart-title">How Long Does the Discount Last?</div>
+    <div class="chart-sub">Spot ÷ Power Law trendline, four catch-up scenarios from two independent AI models (Claude and ChatGPT). Anchored June 10, 2026 at 0.46x ($61.5K spot / $133K trendline). Time spent inside each colored band is the stacking window.</div>
+    <div class="legend" id="legend"></div>
+    <div id="chartbox">
+      <svg id="chart" viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="tooltip"></div>
+    </div>
+    <div class="chart-foot">Smooth glide paths, not price forecasts. Real prices will chop above and below every line here. The signal is the multiplier, not any single month. Every scenario exits the fire-sale zone within months; the slowest keeps spot below the trendline until December 2030.</div>
+  </div>
+
+  <div class="prose">
+    <hr>
+    <h2>Where they agreed</h2>
+    <p>Almost everywhere, honestly.</p>
+    <ul>
+      <li>Same anchor. Both started at $61,500, a spot price from June 2026.</li>
+      <li>Same trendline. Both put the Power Law 1.0x line near $133K at the time.</li>
+      <li>Same multiplier. Spot's sitting at 0.46x of trend. Deep below the line.</li>
+      <li>Same verdict. The Power Law didn't break. The old assumption that we'd be back on the line by mid-2028 did. Both models said the same thing: keep the equation, re-anchor to the current spot, move the dates.</li>
+      <li>Same worst case. Both landed on the exact same slow-recovery date, December 31, 2030. Not close. The same day.</li>
+    </ul>
+    <p>That last one got me. Two different models, built by two different companies, looked at the same hole and picked the same bottom of the range.</p>
+    <p>And that 0.46x number deserves a minute of your time. The last time Bitcoin spent real time below half its trendline was the 2022 bottom. Those months turned out to be the best buying windows on record. Nobody enjoyed them while they were happening. And that's what's great about opportunities like this.</p>
+
+    <hr>
+    <h2>Where they split</h2>
+    <p>One difference, and it showed up everywhere: ChatGPT pushed every recovery date about six months later than Claude.</p>
+    <ul>
+      <li>Claude: back to trend by December 2027 in the bull case, December 2028 in the base case.</li>
+      <li>ChatGPT: June 2028 bull, June 2029 base.</li>
+    </ul>
+    <p>Here's the part I keep coming back to. Before this drawdown, June 2028 looked like a perfectly reasonable <em>base</em> case for getting back to trend. ChatGPT looked at the new hole and demoted that date from expected to optimistic. Claude kept a faster line above it. Lay all five dates out and you get a clean six-month staircase: December 2027, June 2028, December 2028, June 2029, and then both models in agreement on the December 2030 bear.</p>
+    <p>How realistic are the fast ones? Claude's December 2027 line needs roughly 123% annualized growth from here. ChatGPT's June 2028 line needs about 97%. Sounds crazy until you remember the last recovery ran hotter than both. November 2022 to March 2024 was a 4.7x move in sixteen months, north of 200% annualized.</p>
+    <p>The catch: that move launched off a confirmed bottom. We don't have one of those. We have a fresh low from June 2026. One model bet on the bounce. The other bet on the wait.</p>
+    <p>And look at what even the most bullish line in the room admits: about eighteen months below the trendline. <strong>The single most optimistic scenario either model produced still leaves a year and a half of discounted stacking.</strong> They're arguing about how long the window stays open. Neither one is arguing about whether it exists.</p>
+
+    <hr>
+    <h2>The discount window, measured</h2>
+    <p>This is where the reframe pays off. Run every scenario from both models and ask one question: how long does spot stay in each zone below the trendline?</p>
+    <p><strong>The fire-sale zone, below 0.5x of trend. That's where we are right now.</strong></p>
+    <ul>
+      <li>Fastest scenario: we're out by August.</li>
+      <li>Slowest: out by late November.</li>
+    </ul>
+    <p><strong>The deep-discount zone, below 0.75x.</strong></p>
+    <ul>
+      <li>Fastest: lasts until June 2027. About a year.</li>
+      <li>Middle: early-to-mid 2028.</li>
+      <li>Slowest: April 2029. Almost three years.</li>
+    </ul>
+    <p><strong>Below the trendline, period.</strong></p>
+    <ul>
+      <li>Fastest: 19 months.</li>
+      <li>Middle: 31 to 37 months.</li>
+      <li>Slowest: 55 months. Four and a half years of buying under the line.</li>
+    </ul>
+    <p>The "bear case" in this model isn't a crash. It's the longest sale. If you're stacking on a schedule, the scenario that looks worst on a price chart is the one that hands you the most Bitcoin.</p>
+
+    <hr>
+    <h2>A chart I love</h2>
+    <p>You've probably seen the Bitcoin Rainbow Chart somewhere. There's a great version of it on <a href="https://bennet.org/resources/bitcoin-rainbow-chart/" target="_blank" rel="noopener">bennet.org</a>, which is my favorite Bitcoin site, far and away. You can zoom in and out across fifteen years and watch the bands where Bitcoin traded at a discount, at the Power Law, or got ahead of itself. It's the best backward-looking view of this idea anywhere.</p>
+    <p>The chart on this page is the same idea pointed forward. The rainbow shows where price has been relative to trend. This model asks where it might go, and how long it might stay cheap on the way.</p>
+
+    <hr>
+    <h2>The price range, since you're going to ask</h2>
+    <p>Take the most bullish line either model drew and the most bearish:</p>
+    <ul>
+      <li>Summer 2026: both edges sit between $63K and $69K. The disagreement barely exists yet.</li>
+      <li>Mid 2027: $102K on the slow line, $144K on the fast one.</li>
+      <li>January 2029: $205K slow, $287K fast.</li>
+    </ul>
+    <p>That near-term agreement is what makes this thing usable. You don't have to know which 2029 is coming to know what to do in 2026.</p>
+
+    <hr>
+    <h2>What could break it</h2>
+    <p>Both models assumed the catch-up happens at all. The real tail risk lives outside this whole exercise, in the world where the Power Law just stops describing Bitcoin.</p>
+    <p>Eight months of decline isn't evidence of that. A 51% drawdown at 0.46x is well inside fifteen years of normal behavior for this thing. But I'll tell you my own tripwire: if we're still carving lower lows deep into 2027 and the multiplier is pressing toward 0.35x, the question changes from "when do we catch up" to "does the line still hold."</p>
+    <p>Until then, I watch the multiplier, not the price. The price is noise. The distance from trend is the signal.</p>
+
+    <hr>
+    <p>So here's where I land, at the end of a rough week in a rough year.</p>
+    <p>The fire sale is short. The discount is long. And the slowest recovery is the cheapest stack.</p>
+    <p>If you believe, this isn't the season to doom-scroll. It's the season to put in the proof of work that finds you more fiat to stack while the multiplier is this low.</p>
+    <p>And if you want to see what that stacking actually does across these four windows, I built a little calculator: <a href="../dca-110/">DCA 110</a>. Pick a number and look.</p>
+    <p class="sig">Not advice. Just a dad doing the math out loud.<br>— Orange Dad</p>
+  </div>
+
+  <footer>
+    From the maker of <a href="https://genxbitcoin.io" target="_blank" rel="noopener">genxbitcoin.io</a> · Local-first · No tracking · Receipts always
+  </footer>
+</div>
+
+<script>
+(function () {
+  // ---- Model parameters (anchored June 10, 2026) ----
+  var ANCHOR = Date.UTC(2026, 5, 10);
+  var M0 = 0.4625; // spot $61.5K / trendline $133.0K
+
+  var SCENARIOS = [
+    { key: "fast",  label: "Fastest (Claude bull \u00b7 Dec 2027)", date: Date.UTC(2027, 11, 31), color: "#C7901B", width: 2.5, visible: true },
+    { key: "baseA", label: "Base, Claude (Dec 2028)",               date: Date.UTC(2028, 11, 31), color: "#C0532F", width: 2,   visible: true },
+    { key: "baseB", label: "Base, ChatGPT (Jun 2029)",              date: Date.UTC(2029, 5, 30),  color: "#7B4B94", width: 2,   visible: true },
+    { key: "bear",  label: "Slowest (shared bear \u00b7 Dec 2030)", date: Date.UTC(2030, 11, 31), color: "#6B7280", width: 2,   visible: true }
+  ];
+
+  // B1M Power Law 1.0x trendline, first of month (USD).
+  var PL_1X = {
+    "2026-06": 131988, "2026-07": 135524, "2026-08": 139259, "2026-09": 143079,
+    "2026-10": 146857, "2026-11": 150846, "2026-12": 154792,
+    "2027-01": 158957, "2027-02": 163215, "2027-03": 167140, "2027-04": 171576,
+    "2027-05": 175961, "2027-06": 180588, "2027-07": 185161, "2027-08": 189985,
+    "2027-09": 194913, "2027-10": 199781, "2027-11": 204916, "2027-12": 209988,
+    "2028-01": 215337, "2028-02": 220798, "2028-03": 226008, "2028-04": 231690,
+    "2028-05": 237300, "2028-06": 243213, "2028-07": 249050, "2028-08": 255203,
+    "2028-09": 261479, "2028-10": 267674, "2028-11": 274201, "2028-12": 280642,
+    "2029-01": 287428, "2029-02": 294000, "2029-03": 301000, "2029-04": 308000,
+    "2029-05": 315000, "2029-06": 322000, "2029-07": 330000, "2029-08": 338000,
+    "2029-09": 345000, "2029-10": 353000, "2029-11": 361000, "2029-12": 369000,
+    "2030-01": 378000, "2030-02": 387000, "2030-03": 395000, "2030-04": 404000,
+    "2030-05": 412000, "2030-06": 422000, "2030-07": 431000, "2030-08": 441000,
+    "2030-09": 450000, "2030-10": 460000, "2030-11": 470000, "2030-12": 480000,
+    "2031-01": 491000
+  };
+
+  function mult(t, catchup) {
+    if (t >= catchup) return 1.0;
+    var f = (t - ANCHOR) / (catchup - ANCHOR);
+    return Math.pow(M0, 1 - f);
+  }
+
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+
+  // Build monthly data, June 2026 -> Jan 2031
+  var DATA = [];
+  for (var y = 2026; y <= 2031; y++) {
+    for (var m = 0; m < 12; m++) {
+      if (y === 2026 && m < 5) continue;
+      if (y === 2031 && m > 0) break;
+      var t = Date.UTC(y, m, 1);
+      var teff = Math.max(t, ANCHOR);
+      var key = y + "-" + pad2(m + 1);
+      var pl = PL_1X[key];
+      var row = { t: t, pl: pl, vals: {}, prices: {} };
+      for (var i = 0; i < SCENARIOS.length; i++) {
+        var s = SCENARIOS[i];
+        var mu = mult(teff, s.date);
+        row.vals[s.key] = mu;
+        row.prices[s.key] = Math.round(mu * pl / 1000);
+      }
+      DATA.push(row);
+    }
+  }
+
+  // ---- Layout ----
+  var W = 920, H = 470;
+  var ML = 52, MR = 18, MT = 30, MB = 32;
+  var PW = W - ML - MR, PH = H - MT - MB;
+  var T0 = DATA[0].t, T1 = DATA[DATA.length - 1].t;
+  var Y0 = 0.4, Y1 = 1.06;
+  function X(t) { return ML + (t - T0) / (T1 - T0) * PW; }
+  function Y(v) { return MT + (Y1 - v) / (Y1 - Y0) * PH; }
+
+  var ZONES = [
+    { y1: 0.40, y2: 0.50, fill: "#7C3AED", op: 0.14, title: "FIRE SALE",     range: "below 0.5x",   side: "right" },
+    { y1: 0.50, y2: 0.70, fill: "#2563EB", op: 0.11, title: "DEEP DISCOUNT", range: "0.5x \u2013 0.7x",  side: "right" },
+    { y1: 0.70, y2: 0.85, fill: "#059669", op: 0.10, title: "DISCOUNT",      range: "0.7x \u2013 0.85x", side: "left" },
+    { y1: 0.85, y2: 1.00, fill: "#EA580C", op: 0.09, title: "NEAR TREND",    range: "0.85x \u2013 1.0x", side: "left" }
+  ];
+
+  var svg = [];
+  // Zone bands + two-line labels on the empty side of each band
+  for (var z = 0; z < ZONES.length; z++) {
+    var zo = ZONES[z];
+    var zy = Y(zo.y2), zh = Y(zo.y1) - Y(zo.y2);
+    svg.push('<rect x="' + ML + '" y="' + zy + '" width="' + PW + '" height="' + zh + '" fill="' + zo.fill + '" fill-opacity="' + zo.op + '"/>');
+    var tx = zo.side === "right" ? ML + PW - 14 : ML + 14;
+    var anchor = zo.side === "right" ? "end" : "start";
+    var cy = zy + zh / 2;
+    svg.push('<text x="' + tx + '" y="' + (cy - 3) + '" text-anchor="' + anchor + '" fill="' + zo.fill + '" font-size="12" font-weight="700" letter-spacing="0.06em" font-family="IBM Plex Sans, sans-serif">' + zo.title + '</text>');
+    svg.push('<text x="' + tx + '" y="' + (cy + 12) + '" text-anchor="' + anchor + '" fill="#8A8174" font-size="11" font-family="IBM Plex Sans, sans-serif">' + zo.range + '</text>');
+  }
+
+  // Horizontal grid + y labels
+  var yticks = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+  for (var g = 0; g < yticks.length; g++) {
+    var gv = yticks[g], gy = Y(gv);
+    svg.push('<line x1="' + ML + '" y1="' + gy + '" x2="' + (ML + PW) + '" y2="' + gy + '" stroke="#E7DFD2" stroke-dasharray="2 4"/>');
+    svg.push('<text x="' + (ML - 8) + '" y="' + (gy + 4) + '" text-anchor="end" fill="#6E6557" font-size="12" font-family="IBM Plex Sans, sans-serif">' + gv.toFixed(1) + 'x</text>');
+  }
+
+  // X year ticks
+  for (var yr = 2027; yr <= 2031; yr++) {
+    var xt = X(Date.UTC(yr, 0, 1));
+    svg.push('<text x="' + xt + '" y="' + (MT + PH + 22) + '" text-anchor="middle" fill="#6E6557" font-size="12" font-family="IBM Plex Sans, sans-serif">' + yr + '</text>');
+  }
+
+  // Trendline at 1.0x, label above the line
+  svg.push('<line x1="' + ML + '" y1="' + Y(1.0) + '" x2="' + (ML + PW) + '" y2="' + Y(1.0) + '" stroke="#C0532F" stroke-width="1.5" stroke-dasharray="6 4"/>');
+  svg.push('<text x="' + (ML + 4) + '" y="' + (Y(1.0) - 8) + '" fill="#C0532F" font-size="11.5" font-weight="700" font-family="IBM Plex Sans, sans-serif">POWER LAW TRENDLINE \u00b7 1.0x</text>');
+
+  // Scenario lines
+  for (var si = 0; si < SCENARIOS.length; si++) {
+    var sc = SCENARIOS[si];
+    var d = "";
+    for (var p = 0; p < DATA.length; p++) {
+      d += (p === 0 ? "M" : "L") + X(DATA[p].t).toFixed(1) + " " + Y(DATA[p].vals[sc.key]).toFixed(1) + " ";
+    }
+    svg.push('<path id="line-' + sc.key + '" d="' + d + '" fill="none" stroke="' + sc.color + '" stroke-width="' + sc.width + '" stroke-linejoin="round" stroke-linecap="round"/>');
+  }
+
+  // Hover crosshair + capture rect
+  svg.push('<line id="xhair" x1="0" y1="' + MT + '" x2="0" y2="' + (MT + PH) + '" stroke="#B5AB9B" stroke-width="1" visibility="hidden"/>');
+  svg.push('<rect id="capture" x="' + ML + '" y="' + MT + '" width="' + PW + '" height="' + PH + '" fill="transparent"/>');
+
+  var chartEl = document.getElementById("chart");
+  chartEl.innerHTML = svg.join("");
+
+  // ---- Legend ----
+  var legend = document.getElementById("legend");
+  SCENARIOS.forEach(function (s) {
+    var b = document.createElement("button");
+    b.innerHTML = '<span class="swatch" style="background:' + s.color + '"></span><span>' + s.label + '</span>';
+    b.addEventListener("click", function () {
+      s.visible = !s.visible;
+      b.classList.toggle("off", !s.visible);
+      document.getElementById("line-" + s.key).style.display = s.visible ? "" : "none";
+    });
+    legend.appendChild(b);
+  });
+
+  // ---- Tooltip ----
+  var box = document.getElementById("chartbox");
+  var tip = document.getElementById("tooltip");
+  var xhair = document.getElementById("xhair");
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  function showTip(evt) {
+    var rect = chartEl.getBoundingClientRect();
+    var scale = W / rect.width;
+    var mx = (evt.clientX - rect.left) * scale;
+    if (mx < ML || mx > ML + PW) { hideTip(); return; }
+    // nearest data point
+    var frac = (mx - ML) / PW;
+    var idx = Math.round(frac * (DATA.length - 1));
+    idx = Math.max(0, Math.min(DATA.length - 1, idx));
+    var row = DATA[idx];
+    var dt = new Date(row.t);
+    var html = '<div class="tt-date">' + MONTHS[dt.getUTCMonth()] + ' ' + dt.getUTCFullYear() + '</div>';
+    SCENARIOS.forEach(function (s) {
+      if (!s.visible) return;
+      html += '<div style="color:' + s.color + '">' + s.label + ': <b>' +
+        row.vals[s.key].toFixed(2) + 'x \u00b7 $' + row.prices[s.key] + 'K</b></div>';
+    });
+    html += '<div class="tt-pl">Trendline 1.0x: $' + Math.round(row.pl / 1000) + 'K</div>';
+    tip.innerHTML = html;
+    tip.style.display = "block";
+
+    var px = X(row.t) / scale; // px in CSS units
+    xhair.setAttribute("x1", X(row.t));
+    xhair.setAttribute("x2", X(row.t));
+    xhair.setAttribute("visibility", "visible");
+
+    var bw = box.clientWidth, tw = tip.offsetWidth;
+    var left = px + 14;
+    if (left + tw > bw - 4) left = px - tw - 14;
+    if (left < 4) left = 4;
+    tip.style.left = left + "px";
+    tip.style.top = Math.max(4, (evt.clientY - box.getBoundingClientRect().top) - 30) + "px";
+  }
+  function hideTip() {
+    tip.style.display = "none";
+    xhair.setAttribute("visibility", "hidden");
+  }
+  chartEl.addEventListener("mousemove", showTip);
+  chartEl.addEventListener("mouseleave", hideTip);
+  chartEl.addEventListener("touchstart", function (e) { if (e.touches[0]) showTip(e.touches[0]); }, { passive: true });
+  chartEl.addEventListener("touchmove", function (e) { if (e.touches[0]) showTip(e.touches[0]); }, { passive: true });
+  chartEl.addEventListener("touchend", hideTip);
+})();
+</script>
+</body>
+</html>
