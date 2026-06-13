@@ -160,9 +160,9 @@
   .rainbow-slide { position: absolute; inset: 0; display: block; opacity: 0; visibility: hidden; transition: opacity 0.7s ease; text-decoration: none; }
   .rainbow-slide.is-on { opacity: 1; visibility: visible; }
   .rainbow-slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
-  .rainbow-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 16px 11px; font-size: 13px; color: #fff; background: linear-gradient(transparent, rgba(9,18,38,0.88)); display: flex; align-items: center; gap: 8px; }
-  .rainbow-cap b { color: #fff; font-weight: 600; }
-  .rainbow-go { margin-left: auto; color: var(--btc); font-weight: 600; white-space: nowrap; }
+  .rainbow-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 18px 14px; font-size: 14px; color: rgba(255,255,255,0.85); background: linear-gradient(transparent, rgba(9,18,38,0.9)); display: flex; align-items: baseline; gap: 9px; }
+  .rainbow-cap b { color: #fff; font-weight: 600; font-size: 19px; }
+  .rainbow-go { margin-left: auto; color: var(--btc); font-weight: 600; font-size: 16px; white-space: nowrap; }
   .rainbow-dots { display: flex; justify-content: center; gap: 9px; margin: 16px 0 2px; }
   .rainbow-dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--border); cursor: pointer; padding: 0; transition: background 0.2s ease, transform 0.2s ease; }
   .rainbow-dots button:hover { background: var(--faint); }
@@ -355,13 +355,13 @@
       <div class="card-title">First, the chart that taught everyone to read Bitcoin this way</div>
       <div class="card-sub">The Bitcoin Rainbow Chart bands price from "fire sale" at the bottom to "bubble" at the top, and lets you watch fifteen years ride straight through them. It's the best backward-looking view of this whole idea. Three versions worth bookmarking — tap any one to open it live.</div>
       <div class="rainbow-stage" id="rainbowStage">
-        <a class="rainbow-slide is-on" href="https://bennet.org/resources/bitcoin-rainbow-chart/" target="_blank" rel="noopener">
-          <img src="assets/rainbow-bennet.png" alt="The Bitcoin Rainbow Chart on bennet.org" loading="lazy">
-          <span class="rainbow-cap"><b>bennet.org</b> · my favorite Bitcoin site, far and away <span class="rainbow-go">open →</span></span>
-        </a>
-        <a class="rainbow-slide" href="https://www.blockchaincenter.net/en/bitcoin-rainbow-chart/" target="_blank" rel="noopener">
+        <a class="rainbow-slide is-on" href="https://www.blockchaincenter.net/en/bitcoin-rainbow-chart/" target="_blank" rel="noopener">
           <img src="assets/rainbow-blockchaincenter.png" alt="The Bitcoin Rainbow Chart on blockchaincenter.net" loading="lazy">
           <span class="rainbow-cap"><b>blockchaincenter.net</b> · the version most people have seen <span class="rainbow-go">open →</span></span>
+        </a>
+        <a class="rainbow-slide" href="https://bennet.org/resources/bitcoin-rainbow-chart/" target="_blank" rel="noopener">
+          <img src="assets/rainbow-bennet.png" alt="The Bitcoin Rainbow Chart on bennet.org" loading="lazy">
+          <span class="rainbow-cap"><b>bennet.org</b> · my favorite Bitcoin site, far and away <span class="rainbow-go">open →</span></span>
         </a>
         <a class="rainbow-slide" href="https://charts.bitbo.io/rainbow/" target="_blank" rel="noopener">
           <img src="assets/rainbow-bitbo.png" alt="The Bitcoin Rainbow Chart on charts.bitbo.io" loading="lazy">
@@ -539,7 +539,7 @@
   <div class="section">
     <div class="section__head reveal">
       <div class="section__eyebrow">Before you go</div>
-      <h2 class="section__title">Other rabbit holes worth your summer</h2>
+      <h2 class="section__title">Some things to check out this summer</h2>
       <p class="dek">Things I keep sending people. None of them are mine, and none of them pay me.</p>
     </div>
     <div class="holes reveal">
