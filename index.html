@@ -134,6 +134,8 @@
   .legend button { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 7px; font-size: 14px; color: var(--muted); font-weight: 500; }
   .legend button .swatch { width: 24px; height: 3px; border-radius: 2px; display: inline-block; }
   .legend button.off { opacity: 0.35; }
+  .legend button.leg-anim { opacity: 0; transform: translateX(-16px); }
+  .legend button.leg-anim.in { opacity: 1; transform: none; transition: opacity 0.5s ease, transform 0.5s ease; }
   .chartbox { position: relative; }
   .chart-svg { width: 100%; height: auto; display: block; }
   .chart-svg .cg { stroke: var(--chart-grid); }
@@ -750,33 +752,33 @@
   var chartEl = document.getElementById("chart");
   chartEl.innerHTML = svg.join("");
 
-  // ---- Draw-in: base and bear lines trace left to right in sequence,
-  //      then the bull line fades up from the bottom ----
+  // ---- Choreographed draw-in: each line traces in turn while its
+  //      legend chip slides in alongside it. Order: fastest → bear. ----
+  var ANIM_KEYS = ["fast", "baseA", "baseB", "bear"];
+  var ANIM_STEP = 1.4; // seconds between each line/chip
   if (!window.OD_REDUCED && "IntersectionObserver" in window) {
-    var fastPath = document.getElementById("line-fast");
-    var drawPaths = ["baseA", "baseB", "bear"].map(function (k) { return document.getElementById("line-" + k); });
-    drawPaths.forEach(function (p) {
+    var animPaths = ANIM_KEYS.map(function (k) { return document.getElementById("line-" + k); });
+    animPaths.forEach(function (p) {
       var len = p.getTotalLength();
       p.style.strokeDasharray = len;
       p.style.strokeDashoffset = len;
     });
-    fastPath.style.opacity = "0";
-    fastPath.style.transform = "translateY(36px)";
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
         io.disconnect();
-        drawPaths.forEach(function (p, i) {
-          p.style.transition = "stroke-dashoffset 2.4s ease " + (i * 1.5) + "s";
+        animPaths.forEach(function (p, i) {
+          p.style.transition = "stroke-dashoffset 1.9s ease " + (i * ANIM_STEP) + "s";
           p.style.strokeDashoffset = "0";
           p.addEventListener("transitionend", function () {
             p.style.strokeDasharray = "none";
             p.style.transition = "";
           }, { once: true });
         });
-        fastPath.style.transition = "opacity 1.6s ease 4.4s, transform 1.6s ease 4.4s";
-        fastPath.style.opacity = "1";
-        fastPath.style.transform = "translateY(0)";
+        ANIM_KEYS.forEach(function (k, i) {
+          var chip = document.getElementById("leg-" + k);
+          if (chip) setTimeout(function () { chip.classList.add("in"); }, i * ANIM_STEP * 1000);
+        });
       });
     }, { threshold: 0.35 });
     io.observe(chartEl);
@@ -786,6 +788,8 @@
   var legend = document.getElementById("legend");
   SCENARIOS.forEach(function (s) {
     var b = document.createElement("button");
+    b.id = "leg-" + s.key;
+    if (!window.OD_REDUCED && "IntersectionObserver" in window) b.classList.add("leg-anim");
     b.innerHTML = '<span class="swatch" style="background:' + s.color + '"></span><span>' + s.label + '</span>';
     b.addEventListener("click", function () {
       s.visible = !s.visible;
