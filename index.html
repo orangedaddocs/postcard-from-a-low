@@ -106,7 +106,7 @@
   .section__eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--accent-text); }
   .section__title { font-family: "Source Serif 4", Georgia, serif; font-size: clamp(30px, 3.8vw, 44px); line-height: 1.1; font-weight: 600; letter-spacing: -0.014em; max-width: 760px; }
   .section__head { margin-bottom: 36px; }
-  .dek { color: var(--faint); font-size: 14px; margin-top: 14px; }
+  .dek { color: var(--muted); font-size: 17px; margin-top: 14px; }
 
   /* === PROSE === */
   .prose { max-width: 720px; }
@@ -129,19 +129,19 @@
   }
   .tool-card { padding-bottom: 26px; }
   .card-title { font-family: "Source Serif 4", Georgia, serif; font-size: 23px; font-weight: 600; color: var(--text); margin-bottom: 5px; letter-spacing: -0.008em; }
-  .card-sub { color: var(--muted); font-size: 13.5px; line-height: 1.55; margin-bottom: 18px; max-width: 640px; }
-  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 12px; }
-  .legend button { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); font-weight: 500; }
-  .legend button .swatch { width: 22px; height: 3px; border-radius: 2px; display: inline-block; }
+  .card-sub { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 18px; max-width: 680px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 12px; }
+  .legend button { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 7px; font-size: 14px; color: var(--muted); font-weight: 500; }
+  .legend button .swatch { width: 24px; height: 3px; border-radius: 2px; display: inline-block; }
   .legend button.off { opacity: 0.35; }
   .chartbox { position: relative; }
   .chart-svg { width: 100%; height: auto; display: block; }
   .chart-svg .cg { stroke: var(--chart-grid); }
-  .chart-svg .ct { fill: var(--muted); font-size: 12px; font-family: "IBM Plex Sans", sans-serif; }
-  .chart-svg .ct-faint { fill: var(--faint); font-size: 11px; font-family: "IBM Plex Sans", sans-serif; }
-  .chart-svg .cap { fill: var(--faint); font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; font-family: "IBM Plex Sans", sans-serif; }
+  .chart-svg .ct { fill: var(--muted); font-size: 14px; font-family: "IBM Plex Sans", sans-serif; }
+  .chart-svg .ct-faint { fill: var(--faint); font-size: 12.5px; font-family: "IBM Plex Sans", sans-serif; }
+  .chart-svg .cap { fill: var(--faint); font-size: 13px; font-weight: 700; letter-spacing: 0.06em; font-family: "IBM Plex Sans", sans-serif; }
   .chart-svg .trendline { stroke: var(--accent-text); }
-  .chart-svg .trendlabel { fill: var(--accent-text); font-size: 11.5px; font-weight: 700; font-family: "IBM Plex Sans", sans-serif; }
+  .chart-svg .trendlabel { fill: var(--accent-text); font-size: 13.5px; font-weight: 700; font-family: "IBM Plex Sans", sans-serif; }
   .chart-svg .xh { stroke: var(--faint); }
   .tooltip {
     position: absolute; pointer-events: none; display: none;
@@ -206,6 +206,20 @@
      (crawlers, reader modes) all content is visible by default. */
   html.anim .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.65s ease, transform 0.65s ease; }
   html.anim .reveal.in { opacity: 1; transform: none; }
+  /* === ZONE CARDS (discount window) === */
+  .zonecards { display: grid; gap: 16px; margin: 26px 0 8px; }
+  .zonecard { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--zc); border-radius: 0 14px 14px 0; padding: 20px 22px 14px; box-shadow: 0 8px 24px var(--shadow); }
+  .zone-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .zone-name { font-family: "Source Serif 4", Georgia, serif; font-size: 20px; font-weight: 600; color: var(--zc); letter-spacing: -0.008em; }
+  .zone-range { font-size: 12px; color: var(--faint); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .zrow { margin-bottom: 13px; }
+  .zrow-top { display: flex; justify-content: space-between; gap: 12px; font-size: 13.5px; margin-bottom: 5px; }
+  .zk { color: var(--muted); font-weight: 600; }
+  .zv { color: var(--text); font-weight: 600; text-align: right; }
+  .zbar { height: 10px; background: var(--bg-2); border-radius: 6px; overflow: hidden; }
+  .zfill { width: 0; height: 100%; border-radius: 6px; transition: width 1.8s cubic-bezier(0.22, 0.7, 0.25, 1); }
+  @media (prefers-reduced-motion: reduce) { .zfill { transition: none; } }
+
   /* === RABBIT HOLES === */
   .holes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 760px) { .holes { grid-template-columns: 1fr; } }
@@ -297,13 +311,11 @@
 <!-- =================== THE NOTE =================== -->
 <section class="section" id="note">
   <div class="prose reveal">
-    <p>Bitcoin and Nostr don't need another DCA calculator. I know that. But it's June 12th. The SpaceX IPO has people deciding between chasing that and stacking sound money, and Bitcoin just printed a fresh low near $61.5K. The headlines called it ugly. The trendline called it a sale. That gap was interesting enough to spend a Friday on.</p>
-    <p>So here's what you're about to read. Two things.</p>
-    <p><strong>One.</strong> We're a long way under the Power Law trendline right now, far enough that climbing back takes time. I had Claude and ChatGPT run that catch-up separately, and I'll show you where they agree and where they don't. More on that below.</p>
-    <p><strong>Two.</strong> A play on the number 110. There's a heated fight in Bitcoin this summer over <a href="https://bip110.org/" target="_blank" rel="noopener">BIP 110</a>. I'm a proponent, and I'll be signaling for it once I'm through the next few weeks of work. Let's keep the stakes straight, though: this page is a toy. BIP 110 is not — it's the most important thing happening in Bitcoin this summer, and <a href="https://bip110.org/" target="_blank" rel="noopener">bip110.org</a> is the place to understand why. That argument has all the voices it needs, so I just borrowed the number. Bitcoin's on sale, so what if you ran a DCA 110? Stack an extra $110 a month. Or a week, if you can swing it. I even ran the $110-a-day version, just to show how much a person can pile up in a window like this.</p>
+    <p>Bitcoin and Nostr don't need another DCA calculator. I know that. But it's June 12th, and the SpaceX IPO has people deciding between chasing that and stacking sound money, while Bitcoin just printed a fresh low near $61.5K. The headlines called it ugly, the FUD is real, but the trendline says sats are on sale. So I spent a Friday afternoon on the bike, and a Friday evening putting this together. Here's what you're about to read.</p>
+    <p><strong>Part one.</strong> We're a long way under the Power Law trendline right now, far enough that climbing back takes time. I had Claude and ChatGPT run that catch-up separately, and I'll show you where they agree and where they don't.</p>
+    <p><strong>Part two.</strong> A play on the number 110. There's a heated fight in Bitcoin this summer over <a href="https://bip110.org/" target="_blank" rel="noopener">BIP 110</a>. I'm a proponent, and I'll be signaling for it once I'm through the next few weeks of work. This page is a fun thought exercise, and maybe a tool that's fun to play with. BIP 110 is the most important thing happening in Bitcoin this year, and <a href="https://bip110.org/" target="_blank" rel="noopener">bip110.org</a> is the place to understand why. That argument has all the voices it needs, so I just borrowed the number. Bitcoin's on sale, so what if you ran a "DCA 110"? Stack an extra $110 a month. Or a week, if you can swing it. I even ran the $110-a-day version, just to show how much a person can pile up in a window like this.</p>
     <p>That's the whole idea. This is a good summer to be hustling.</p>
-    <p>Maybe you'll find it useful. Maybe you'll skip it. It was fun to build, and it came together fast on the new Claude model, which still surprises me.</p>
-    <div class="pullquote">Part one measures the sale. Part two prices your stack.</div>
+    <p>Maybe you'll find it useful. Maybe you'll skip it. It was fun to build, and it came together fast on the new Claude Fable 5 model, which still surprises me.</p>
   </div>
 </section>
 
@@ -316,7 +328,7 @@
     </div>
 
     <div class="prose reveal">
-      <p>Bitcoin topped near $126K in October 2025. Since then it's fallen over and over. On June 10, 2026, we printed a fresh low around $61,500. That's half the paper value gone in eight months.</p>
+      <p>Bitcoin topped near $126K in October 2025. Since then it's fallen again and again. On June 10, 2026, we printed a fresh low around $61,500. That's half the paper value gone in eight months.</p>
       <p>So what does that mean for the Power Law trendline? Two AI models, Claude and ChatGPT, got the same question independently. Same data, same starting point, no peeking at each other's homework: we're way below the trendline right now. If the line holds, when do we get back to it?</p>
       <p>Before the answers, here's the thing. This is technically a price model. But that's not what it's for.</p>
       <p><strong>What it really measures is time.</strong></p>
@@ -351,37 +363,42 @@
 
       <hr>
       <h2>Where they split</h2>
-      <p>One difference, and it showed up everywhere: ChatGPT pushed every recovery date about six months later than Claude.</p>
+      <p>One difference showed up everywhere. ChatGPT put every recovery date about six months later than Claude.</p>
+      <p>Same scenarios, two clocks:</p>
       <ul>
-        <li>Claude: back to trend by December 2027 in the bull case, December 2028 in the base case.</li>
-        <li>ChatGPT: June 2028 bull, June 2029 base.</li>
+        <li>Bull case: Claude says December 2027, ChatGPT says June 2028.</li>
+        <li>Base case: Claude says December 2028, ChatGPT says June 2029.</li>
+        <li>Bear case: both say December 2030.</li>
       </ul>
-      <p>Here's the part I keep coming back to. Before this drawdown, June 2028 looked like a perfectly reasonable <em>base</em> case for getting back to trend. ChatGPT looked at the new hole and demoted that date from expected to optimistic. Claude kept a faster line above it. Lay all five dates out and you get a clean six-month staircase: December 2027, June 2028, December 2028, June 2029, and then both models in agreement on the December 2030 bear.</p>
-      <p>How realistic are the fast ones? Claude's December 2027 line needs roughly 123% annualized growth from here. ChatGPT's June 2028 line needs about 97%. Sounds crazy until you remember the last recovery ran hotter than both. November 2022 to March 2024 was a 4.7x move in sixteen months, north of 200% annualized.</p>
-      <p>The catch: that move launched off a confirmed bottom. We don't have one of those. We have a fresh low from June 2026. One model bet on the bounce. The other bet on the wait.</p>
-      <p>And look at what even the most bullish line in the room admits: about eighteen months below the trendline. <strong>The single most optimistic scenario either model produced still leaves a year and a half of discounted stacking.</strong> They're arguing about how long the window stays open. Neither one is arguing about whether it exists.</p>
+      <p>Here's the part I keep coming back to. June 2028 used to be an unremarkable base case for getting back to trend. After this drawdown, ChatGPT moved it. June 2028 is now its best case, not its middle one. Claude kept a faster line above it. That one shift is the whole disagreement.</p>
+      <p>Lay the dates in order and you get a clean six-month staircase. December 2027, June 2028, December 2028, June 2029. Then a gap, and both models holding hands on the December 2030 bear.</p>
+      <p>How realistic are the fast ones? Claude's December 2027 needs about 123% annualized growth from here. ChatGPT's June 2028 needs about 97%. Sounds impossible until you check the last recovery. November 2022 to March 2024 was a 4.7x move in sixteen months, north of 200% annualized. Both fast lines are slower than what actually happened two years ago.</p>
+      <p>The catch: that run launched off a confirmed bottom. We don't have one of those. We've got a fresh low from June 2026.</p>
+      <p>Now look at what even the most bullish line admits. About eighteen months below the trendline. <strong>The single most optimistic number either model produced still leaves a year and a half of discounted stacking.</strong> They're arguing about how long the window stays open. Neither one is arguing about whether it's open.</p>
 
       <hr>
       <h2>The discount window, measured</h2>
-      <p>This is where the reframe pays off. Run every scenario from both models and ask one question: how long does spot stay in each zone below the trendline?</p>
-      <p><strong>The fire-sale zone, below 0.5x of trend. That's where we are right now.</strong></p>
-      <ul>
-        <li>Fastest scenario: we're out by August.</li>
-        <li>Slowest: out by late November.</li>
-      </ul>
-      <p><strong>The deep-discount zone, below 0.75x.</strong></p>
-      <ul>
-        <li>Fastest: lasts until June 2027. About a year.</li>
-        <li>Middle: early-to-mid 2028.</li>
-        <li>Slowest: April 2029. Almost three years.</li>
-      </ul>
-      <p><strong>Below the trendline, period.</strong></p>
-      <ul>
-        <li>Fastest: 19 months.</li>
-        <li>Middle: 31 to 37 months.</li>
-        <li>Slowest: 55 months. Four and a half years of buying under the line.</li>
-      </ul>
-      <p>The "bear case" in this model isn't a crash. It's the longest sale. If you're stacking on a schedule, the scenario that looks worst on a price chart is the one that hands you the most Bitcoin.</p>
+      <p>This is where the reframe pays off. Run every scenario from both models and ask one question: how long does spot stay in each zone below the trendline? Bars are to scale — the full width is the 55-month bear.</p>
+      <div class="zonecards" id="zonecards">
+        <div class="zonecard" style="--zc:#7C3AED;">
+          <div class="zone-head"><span class="zone-name">Fire sale</span><span class="zone-range">below 0.5x · we're in it right now</span></div>
+          <div class="zrow"><div class="zrow-top"><span class="zk">Fastest</span><span class="zv">out by August</span></div><div class="zbar"><div class="zfill" data-w="5" style="background:#f7931a"></div></div></div>
+          <div class="zrow"><div class="zrow-top"><span class="zk">Slowest</span><span class="zv">out by late November</span></div><div class="zbar"><div class="zfill" data-w="10" style="background:#8a93a6"></div></div></div>
+        </div>
+        <div class="zonecard" style="--zc:#2563EB;">
+          <div class="zone-head"><span class="zone-name">Deep discount</span><span class="zone-range">below 0.75x</span></div>
+          <div class="zrow"><div class="zrow-top"><span class="zk">Fastest</span><span class="zv">June 2027 · about a year</span></div><div class="zbar"><div class="zfill" data-w="22" style="background:#f7931a"></div></div></div>
+          <div class="zrow"><div class="zrow-top"><span class="zk">Middle</span><span class="zv">early-to-mid 2028</span></div><div class="zbar"><div class="zfill" data-w="38" style="background:#9b7bd4"></div></div></div>
+          <div class="zrow"><div class="zrow-top"><span class="zk">Slowest</span><span class="zv">April 2029 · almost three years</span></div><div class="zbar"><div class="zfill" data-w="62" style="background:#8a93a6"></div></div></div>
+        </div>
+        <div class="zonecard" style="--zc:#d1751e;">
+          <div class="zone-head"><span class="zone-name">Below the trendline, period</span><span class="zone-range">anything under 1.0x</span></div>
+          <div class="zrow"><div class="zrow-top"><span class="zk">Fastest</span><span class="zv">19 months</span></div><div class="zbar"><div class="zfill" data-w="35" style="background:#f7931a"></div></div></div>
+          <div class="zrow"><div class="zrow-top"><span class="zk">Middle</span><span class="zv">31–37 months</span></div><div class="zbar"><div class="zfill" data-w="62" style="background:#9b7bd4"></div></div></div>
+          <div class="zrow"><div class="zrow-top"><span class="zk">Slowest</span><span class="zv">55 months · four and a half years</span></div><div class="zbar"><div class="zfill" data-w="100" style="background:#8a93a6"></div></div></div>
+        </div>
+      </div>
+      <div class="pullquote">The "bear case" in this model isn't a crash. It's the longest sale. The scenario that looks worst on a price chart hands you the most Bitcoin.</div>
 
       <hr>
       <h2>A chart I love</h2>
@@ -508,16 +525,16 @@
         <div class="hole__links"><a href="https://bennet.org/" target="_blank" rel="noopener">bennet.org →</a><a href="https://bennet.org/learn/what-is-bitcoin/" target="_blank" rel="noopener">What is Bitcoin →</a></div>
       </div>
       <div class="hole">
-        <div class="hole__tag">Hashrate</div>
-        <h3>Rent Some Hash</h3>
-        <p>Renting hash rate gets talked about a lot, but nobody shows you how to actually do it. This resource is awesome.</p>
-        <div class="hole__links"><a href="https://rentsomehash.com/" target="_blank" rel="noopener">rentsomehash.com →</a></div>
-      </div>
-      <div class="hole">
         <div class="hole__tag">Mining</div>
         <h3>Pool mining, explained</h3>
         <p>nomadshiba's guide to pool mining is the clearest walkthrough I've read. Published on Nostr, where it belongs.</p>
         <div class="hole__links"><a href="https://yakihonne.com/article/s/_@nomadshiba.me/kLmYhoWJ1oPtsWMyc6XqC" target="_blank" rel="noopener">Read the guide →</a></div>
+      </div>
+      <div class="hole">
+        <div class="hole__tag">Hashrate</div>
+        <h3>Rent Some Hash</h3>
+        <p>Renting hash rate gets talked about a lot, but nobody shows you how to actually do it. This resource is awesome.</p>
+        <div class="hole__links"><a href="https://rentsomehash.com/" target="_blank" rel="noopener">rentsomehash.com →</a></div>
       </div>
       <div class="hole">
         <div class="hole__tag">Health + sats</div>
@@ -581,6 +598,28 @@
       if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("in");
       else io.observe(el);
     });
+  }
+
+  // ---- Discount-window bars grow when scrolled into view ----
+  var zc = document.getElementById("zonecards");
+  if (zc) {
+    var fills = Array.prototype.slice.call(zc.querySelectorAll(".zfill"));
+    var fillBars = function () {
+      fills.forEach(function (f, i) {
+        setTimeout(function () { f.style.width = f.getAttribute("data-w") + "%"; }, i * 220);
+      });
+    };
+    if (REDUCED || !("IntersectionObserver" in window)) fillBars();
+    else {
+      var zio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          zio.disconnect();
+          fillBars();
+        });
+      }, { threshold: 0.25 });
+      zio.observe(zc);
+    }
   }
 })();
 </script>
@@ -672,7 +711,7 @@
     var tx = zo.side === "right" ? ML + PW - 14 : ML + 14;
     var anchor = zo.side === "right" ? "end" : "start";
     var cy = zy + zh / 2;
-    svg.push('<text x="' + tx + '" y="' + (cy - 3) + '" text-anchor="' + anchor + '" fill="' + zo.fill + '" font-size="12" font-weight="700" letter-spacing="0.06em" font-family="IBM Plex Sans, sans-serif">' + zo.title + '</text>');
+    svg.push('<text x="' + tx + '" y="' + (cy - 3) + '" text-anchor="' + anchor + '" fill="' + zo.fill + '" font-size="13.5" font-weight="700" letter-spacing="0.06em" font-family="IBM Plex Sans, sans-serif">' + zo.title + '</text>');
     svg.push('<text x="' + tx + '" y="' + (cy + 12) + '" text-anchor="' + anchor + '" class="ct-faint">' + zo.range + '</text>');
   }
 
@@ -711,26 +750,33 @@
   var chartEl = document.getElementById("chart");
   chartEl.innerHTML = svg.join("");
 
-  // ---- Draw-in animation: scenario lines trace themselves on first view ----
+  // ---- Draw-in: base and bear lines trace left to right in sequence,
+  //      then the bull line fades up from the bottom ----
   if (!window.OD_REDUCED && "IntersectionObserver" in window) {
-    var paths = SCENARIOS.map(function (s) { return document.getElementById("line-" + s.key); });
-    paths.forEach(function (p) {
+    var fastPath = document.getElementById("line-fast");
+    var drawPaths = ["baseA", "baseB", "bear"].map(function (k) { return document.getElementById("line-" + k); });
+    drawPaths.forEach(function (p) {
       var len = p.getTotalLength();
       p.style.strokeDasharray = len;
       p.style.strokeDashoffset = len;
     });
+    fastPath.style.opacity = "0";
+    fastPath.style.transform = "translateY(36px)";
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
         io.disconnect();
-        paths.forEach(function (p, i) {
-          p.style.transition = "stroke-dashoffset 2.8s ease " + (i * 0.35) + "s";
+        drawPaths.forEach(function (p, i) {
+          p.style.transition = "stroke-dashoffset 2.4s ease " + (i * 1.5) + "s";
           p.style.strokeDashoffset = "0";
           p.addEventListener("transitionend", function () {
             p.style.strokeDasharray = "none";
             p.style.transition = "";
           }, { once: true });
         });
+        fastPath.style.transition = "opacity 1.6s ease 4.4s, transform 1.6s ease 4.4s";
+        fastPath.style.opacity = "1";
+        fastPath.style.transform = "translateY(0)";
       });
     }, { threshold: 0.35 });
     io.observe(chartEl);
