@@ -1,4 +1,4 @@
-# DCA 110 · A Bitcoin Artifact from the Summer of 2026
+# DCA 110 · A Postcard from a Bitcoin Low
 
 One standalone page by Orange Dad, from the maker of [genxbitcoin.io](https://genxbitcoin.io). Local-first, no tracking, receipts always.
 
