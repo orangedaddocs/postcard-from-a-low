@@ -3,16 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>DCA 110 · A Postcard from a Bitcoin Low</title>
-<meta name="description" content="June 2026: Bitcoin at 0.46x of its Power Law trendline. Two AI models map the catch-up, and a playful calculator prices an extra $110 stacked until spot touches the line.">
+<meta name="description" content="June 2026: Bitcoin sits far below its Power Law trendline. A chart note on how long the discount might last, plus a calculator that prices an extra $110 stacked until spot touches the line. Not advice.">
+<link rel="canonical" href="https://orangedaddocs.github.io/dca-110/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23f7931a'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='36' font-weight='600' fill='white'%3E%E2%82%BF%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500;1,8..60,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://orangedaddocs.github.io/dca-110/">
+<meta property="og:title" content="DCA 110: A Postcard from a Bitcoin Low">
+<meta property="og:description" content="Bitcoin printed a fresh low at 0.46x of its Power Law trendline. How long does the discount last — and what does an extra $110 buy before it ends? A chart note and a calculator. Not advice.">
+<meta property="og:image" content="https://orangedaddocs.github.io/dca-110/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="DCA 110: A Postcard from a Bitcoin Low — Bitcoin at 0.46x of its Power Law trendline, June 2026.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DCA 110: A Postcard from a Bitcoin Low">
+<meta name="twitter:description" content="Bitcoin at 0.46x of trend. How long does the discount last, and what does an extra $110 buy before it ends? Not advice.">
+<meta name="twitter:image" content="https://orangedaddocs.github.io/dca-110/assets/og-image.png">
+
+<link rel="stylesheet" href="assets/fonts.css">
 <style>
   :root {
     --bg: #fbfaf5; --bg-2: #f4f1e8; --card: #ffffff;
-    --text: #11172a; --muted: #525973; --faint: #7b7f90;
+    --text: #11172a; --muted: #525973; --faint: #5f6373;
     --border: #e6e4dc; --border-soft: #efece4;
     --btc: #f7931a; --btc-deep: #d1751e; --accent-text: #d1751e;
     --btc-soft: rgba(247, 147, 26, 0.07);
@@ -44,6 +58,8 @@
   h1, h2, h3, h4, p { margin: 0; }
   a { color: var(--accent-text); text-decoration-thickness: 1px; text-underline-offset: 3px; }
   button { font-family: inherit; }
+  :focus-visible { outline: 3px solid var(--btc); outline-offset: 2px; border-radius: 4px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   .tnum { font-variant-numeric: tabular-nums; }
 
   /* === TOP NAV === */
@@ -51,7 +67,8 @@
   .top__inner { max-width: 1100px; margin: 0 auto; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
   .brand { display: inline-flex; align-items: center; text-decoration: none; color: var(--text); min-width: 0; }
   .masthead { font-family: "Source Serif 4", Georgia, serif; font-size: 17px; font-weight: 600; letter-spacing: -0.008em; line-height: 1.25; }
-  @media (max-width: 860px) { .masthead { font-size: 14px; } }
+  .mh-short { display: none; }
+  @media (max-width: 780px) { .mh-full { display: none; } .mh-short { display: inline; } }
   .top__right { display: flex; align-items: center; gap: 24px; }
   .nav { display: flex; align-items: center; gap: 24px; color: var(--muted); font-size: 14px; font-weight: 500; }
   .nav a { color: inherit; text-decoration: none; transition: color 0.15s ease; }
@@ -136,8 +153,14 @@
   .legend button.off { opacity: 0.35; }
   .legend button.leg-anim { opacity: 0; transform: translateX(-16px); }
   .legend button.leg-anim.in { opacity: 1; transform: none; transition: opacity 0.5s ease, transform 0.5s ease; }
-  .chartbox { position: relative; }
+  .chartbox { position: relative; overflow-x: auto; overscroll-behavior-x: contain; }
   .chart-svg { width: 100%; height: auto; display: block; }
+  .chart-swipe { display: none; text-align: center; font-size: 11.5px; color: var(--faint); margin-top: 8px; }
+  @media (max-width: 680px) {
+    .chart-svg { min-width: 680px; }
+    .chart-swipe { display: block; }
+    .chart-svg .ct-faint { display: none; }
+  }
   .chart-svg .cg { stroke: var(--chart-grid); }
   .chart-svg .ct { fill: var(--muted); font-size: 14px; font-family: "IBM Plex Sans", sans-serif; }
   .chart-svg .ct-faint { fill: var(--faint); font-size: 12.5px; font-family: "IBM Plex Sans", sans-serif; }
@@ -167,6 +190,9 @@
   .rainbow-dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--border); cursor: pointer; padding: 0; transition: background 0.2s ease, transform 0.2s ease; }
   .rainbow-dots button:hover { background: var(--faint); }
   .rainbow-dots button.on { background: var(--btc); transform: scale(1.3); }
+  .rainbow-controls { display: flex; justify-content: center; margin-top: 4px; }
+  .rainbow-pause { background: none; border: none; color: var(--faint); font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 10px; border-radius: 6px; }
+  .rainbow-pause:hover { color: var(--text); }
 
   /* === TOOL: presets === */
   .picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
@@ -248,8 +274,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .live-card__dot::before { animation: none; }
-    .orb { animation: none; }
+    .live-card__dot::before, .orb { animation: none; }
+    .rainbow-slide, .legend button.leg-anim, body, .button, .preset, .scard, .hole, .theme-btn, .zfill { transition: none !important; }
   }
 </style>
 </head>
@@ -258,8 +284,8 @@
 <!-- =================== TOP =================== -->
 <header class="top">
   <div class="top__inner">
-    <a class="brand" href="#">
-      <span class="masthead">DCA 110: A Postcard from a Bitcoin Low</span>
+    <a class="brand" href="#content" aria-label="DCA 110 — back to top">
+      <span class="masthead"><span class="mh-full">DCA 110: A Postcard from a Bitcoin Low</span><span class="mh-short">DCA 110</span></span>
     </a>
     <div class="top__right">
       <nav class="nav">
@@ -272,6 +298,8 @@
   </div>
 </header>
 
+<main id="content">
+
 <!-- =================== HERO =================== -->
 <section class="hero">
   <div class="orb orb--1"></div>
@@ -281,7 +309,7 @@
     <div>
       <h1>DCA 110: A Postcard from a Bitcoin Low</h1>
       <p class="hero__sub">
-        A chart note and a calculator, on one page, built around a borrowed number.
+        Bitcoin's sitting more than 50% under its Power Law trendline. Here's how long the discount might last — and what an extra $110 buys before it ends.
       </p>
       <div class="hero__ctas">
         <a class="button button--btc" href="#note">Read the note →</a>
@@ -309,7 +337,7 @@
       </div>
       <div class="live-row">
         <span class="live-row__k">Multiplier</span>
-        <span class="live-row__v live-row__v--btc tnum">0.48x · fire sale</span>
+        <span class="live-row__v live-row__v--btc tnum">0.46x at the low · fire sale</span>
       </div>
       <div class="live-row">
         <span class="live-row__k">Catch-up range</span>
@@ -356,19 +384,20 @@
       <div class="card-sub">The Bitcoin Rainbow Chart bands price from "fire sale" at the bottom to "bubble" at the top, and lets you watch fifteen years ride straight through them. It's the best backward-looking view of this whole idea. Three versions worth bookmarking — tap any one to open it live.</div>
       <div class="rainbow-stage" id="rainbowStage">
         <a class="rainbow-slide is-on" href="https://www.blockchaincenter.net/en/bitcoin-rainbow-chart/" target="_blank" rel="noopener">
-          <img src="assets/rainbow-blockchaincenter.png" alt="The Bitcoin Rainbow Chart on blockchaincenter.net" loading="lazy">
+          <img src="assets/rainbow-blockchaincenter.png" alt="The Bitcoin Rainbow Chart on blockchaincenter.net" loading="lazy" width="1400" height="667" onerror="this.style.display='none'">
           <span class="rainbow-cap"><b>blockchaincenter.net</b> · the version most people have seen <span class="rainbow-go">open →</span></span>
         </a>
         <a class="rainbow-slide" href="https://bennet.org/resources/bitcoin-rainbow-chart/" target="_blank" rel="noopener">
-          <img src="assets/rainbow-bennet.png" alt="The Bitcoin Rainbow Chart on bennet.org" loading="lazy">
+          <img src="assets/rainbow-bennet.png" alt="The Bitcoin Rainbow Chart on bennet.org" loading="lazy" width="1400" height="667" onerror="this.style.display='none'">
           <span class="rainbow-cap"><b>bennet.org</b> · my favorite Bitcoin site, far and away <span class="rainbow-go">open →</span></span>
         </a>
         <a class="rainbow-slide" href="https://charts.bitbo.io/rainbow/" target="_blank" rel="noopener">
-          <img src="assets/rainbow-bitbo.png" alt="The Bitcoin Rainbow Chart on charts.bitbo.io" loading="lazy">
+          <img src="assets/rainbow-bitbo.png" alt="The Bitcoin Rainbow Chart on charts.bitbo.io" loading="lazy" width="1400" height="667" onerror="this.style.display='none'">
           <span class="rainbow-cap"><b>charts.bitbo.io</b> · dark mode, updated hourly <span class="rainbow-go">open →</span></span>
         </a>
       </div>
       <div class="rainbow-dots" id="rainbowDots"></div>
+      <div class="rainbow-controls"><button type="button" class="rainbow-pause" id="rainbowPause" aria-pressed="false">Pause ⏸</button></div>
       <div class="chart-foot">Three independent versions of the same idea, none of them mine. Screenshots link to the live charts. The chart below is that idea pointed forward — from "where has price been" to "how long might it stay cheap."</div>
     </div>
 
@@ -377,9 +406,10 @@
       <div class="card-sub">Spot ÷ Power Law trendline, four catch-up scenarios from two independent AI models (Claude and ChatGPT). Anchored June 10, 2026 at 0.46x ($61.5K spot / $133K trendline). Time spent inside each colored band is the stacking window.</div>
       <div class="legend" id="legend"></div>
       <div class="chartbox" id="chartbox">
-        <svg id="chart" class="chart-svg" viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg"></svg>
+        <svg id="chart" class="chart-svg" viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line chart: spot price divided by the Power Law trendline, June 2026 to 2031. All four catch-up scenarios start at 0.46x of trend in mid-2026 and climb to 1.0x. The fastest (Claude bull) reaches the trendline by December 2027; the slowest (shared bear) not until December 2030. The longer a line stays below 1.0x, the longer the discount lasts."></svg>
         <div id="tooltip" class="tooltip"></div>
       </div>
+      <div class="chart-swipe" aria-hidden="true">← swipe to see the whole chart →</div>
       <div class="chart-foot">Smooth glide paths, not price forecasts. Real prices will chop above and below every line here. The signal is the multiplier, not any single month. Every scenario exits the fire-sale zone within months; the slowest keeps spot below the trendline until December 2030.</div>
     </div>
 
@@ -394,7 +424,7 @@
         <li>Same verdict. The Power Law didn't break. The old assumption that we'd be back on the line by mid-2028 did. Both models said the same thing: keep the equation, re-anchor to the current spot, move the dates.</li>
         <li>Same worst case. Both landed on the exact same slow-recovery date, December 31, 2030. Not close. The same day.</li>
       </ul>
-      <p>That last one got me. Two different models, built by two different companies, looked at the same hole and picked the same bottom of the range.</p>
+      <p>That last one got me at first — then I checked my enthusiasm. Two language models fed the same anchor, the same trendline, and the same framing aren't two independent oracles. They're two very well-read friends who read the same books. Them landing on the same date isn't proof the date is right; it's a sanity check that I didn't fat-finger the setup, and a read on how wide the honest range is. Take the agreement as "we probably framed this sanely," not "the future is settled."</p>
       <p>And that 0.46x number deserves a minute of your time. The last time Bitcoin spent real time below half its trendline was the 2022 bottom. Those months turned out to be the best buying windows on record. Nobody enjoyed them while they were happening. And that's what's great about opportunities like this.</p>
 
       <hr>
@@ -407,7 +437,7 @@
         <li>Bear case: both say December 2030.</li>
       </ul>
       <p>Here's the part I keep coming back to. June 2028 used to be an unremarkable base case for getting back to trend. After this drawdown, ChatGPT moved it. June 2028 is now its best case, not its middle one. Claude kept a faster line above it. That one shift is the whole disagreement.</p>
-      <p>Lay the dates in order and you get a clean six-month staircase. December 2027, June 2028, December 2028, June 2029. Then a gap, and both models holding hands on the December 2030 bear.</p>
+      <p>Lay the dates in order and you get a clean six-month staircase. December 2027, June 2028, December 2028, June 2029. Then a gap, and both models agreeing on the December 2030 bear.</p>
       <p>How realistic are the fast ones? Claude's December 2027 needs about 123% annualized growth from here. ChatGPT's June 2028 needs about 97%. Sounds impossible until you check the last recovery. November 2022 to March 2024 was a 4.7x move in sixteen months, north of 200% annualized. Both fast lines are slower than what actually happened two years ago.</p>
       <p>The catch: that run launched off a confirmed bottom. We don't have one of those. We've got a fresh low from June 2026.</p>
       <p>Now look at what even the most bullish line admits. About eighteen months below the trendline. <strong>The single most optimistic number either model produced still leaves a year and a half of discounted stacking.</strong> They're arguing about how long the window stays open. Neither one is arguing about whether it's open.</p>
@@ -437,25 +467,16 @@
       <div class="pullquote">The "bear case" in this model isn't a crash. It's the longest sale. The scenario that looks worst on a price chart hands you the most Bitcoin.</div>
 
       <hr>
-      <h2>The price range, since you're going to ask</h2>
-      <p>Take the most bullish line either model drew and the most bearish:</p>
-      <ul>
-        <li>Summer 2026: both edges sit between $63K and $69K. The disagreement barely exists yet.</li>
-        <li>Mid 2027: $102K on the slow line, $144K on the fast one.</li>
-        <li>January 2029: $205K slow, $287K fast.</li>
-      </ul>
-      <p>That near-term agreement is what makes this thing usable. You don't have to know which 2029 is coming to know what to do in 2026.</p>
-
-      <hr>
       <h2 id="break">What could break it</h2>
       <p>Both models assumed the catch-up happens at all. The real tail risk lives outside this whole exercise, in the world where the Power Law just stops describing Bitcoin.</p>
+      <p>And be honest about what the Power Law is: a straight line fit to fifteen years of a number that mostly went up, on a log-log chart that flatters almost any rising series. That's the textbook setup for overfitting and survivorship — "it held for fifteen years" is exactly what every since-broken model could say the year before it broke. I lean on it because the alternative is no frame at all, not because the line is a law of physics. It's a useful prior with a real chance of being wrong.</p>
       <p>Eight months of decline isn't evidence of that. A 51% drawdown at 0.46x is well inside fifteen years of normal behavior for this thing. But I'll tell you my own tripwire: if we're still carving lower lows deep into 2027 and the multiplier is pressing toward 0.35x, the question changes from "when do we catch up" to "does the line still hold."</p>
       <p>Until then, I watch the multiplier, not the price. The price is noise. The distance from trend is the signal.</p>
 
       <hr>
       <p>So here's where I land, at the end of a rough week in a rough year.</p>
       <p>The fire sale is short. The discount is long. And the slowest recovery is the cheapest stack.</p>
-      <p>If you believe, this isn't the season to doom-scroll. It's the season to put in the proof of work that finds you more fiat to stack while the multiplier is this low.</p>
+      <p>If you believe, this isn't the season to doom-scroll. It's the season to do the work that finds you more fiat to stack while the multiplier is this low.</p>
       <p>And if you want to see what that stacking actually does across these four windows, keep scrolling. The calculator is <a href="#dca-110">right below</a>. Pick a number and look.</p>
     </div>
   </div>
@@ -505,9 +526,10 @@
     <div class="card-sub">Cumulative extra Bitcoin stacked along each glide path. Lines climb steepest early, while spot sits deepest under the trendline, and each line stops the day its scenario touches 1.0x.</div>
     <div class="legend" id="d-legend"></div>
     <div class="chartbox" id="d-chartbox">
-      <svg id="d-chart" class="chart-svg" viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg"></svg>
+      <svg id="d-chart" class="chart-svg" viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line chart: cumulative extra Bitcoin stacked along each scenario, from July 2026 until that scenario's price reaches the trendline. Each line climbs steepest early, when price is cheapest, then ends the day it touches trend. The slowest bear scenario runs longest and accumulates the most Bitcoin."></svg>
       <div id="d-tooltip" class="tooltip"></div>
     </div>
+    <div class="chart-swipe" aria-hidden="true">← swipe to see the whole chart →</div>
     <div class="chart-foot">Smooth glide paths, not price forecasts. Real DCA buys the chop, not the curve — months that dip below the glide path buy you more sats than this shows, months above it buy fewer. The shape is the signal: early dollars are the heavy dollars.</div>
   </div>
 
@@ -528,8 +550,10 @@
     <h2>What this isn't</h2>
     <p>A prediction. Real prices will chop above and below every line here, and your real buys will land all over that chop. This is a deterministic toy built on smooth glide paths, so the numbers are exact for the model and approximate for reality. The model can also just be wrong — part one covers <a href="#break">what would break it</a>.</p>
     <p>It's also not a dare to stack more than you can. The tool works the same at $110 a month or $20 a month. The point isn't the size of the number, it's seeing what <em>time under the line</em> does when the number is honestly yours.</p>
+    <p>And let me read the obvious out loud, because the page keeps not saying it: stacking into a 50%-off market means buying something that is, right now, falling. It can fall further, for longer than this model thinks, or the model can be wrong about the whole thing. Only stack money you won't need for years and can watch go redder before it goes anywhere. The discount is real and so is the risk — they're the same sentence.</p>
 
     <hr>
+    <p>So if the math moved you, don't let it evaporate by morning. Open your exchange or your wallet and set the recurring buy — $110 or $20, weekly or monthly, whatever's honestly yours — and let it run while the multiplier is this low. The cheap months don't wait for you to feel ready.</p>
     <p>Every Bitcoiner can look back at a month they wish they could have bought again. This page is just the math for the next one.</p>
   </div>
 </section>
@@ -583,12 +607,14 @@
   </div>
 </section>
 
+</main>
+
 <!-- =================== FOOTER =================== -->
-<div class="footer-line">
+<footer class="footer-line">
   <div class="footer-line__inner reveal">
     <p>Not advice. Just a dad doing the math out loud.<br>— Orange Dad</p>
   </div>
-</div>
+</footer>
 
 <!-- =================== THEME + REVEAL =================== -->
 <script>
@@ -612,6 +638,14 @@
     applyTheme(theme);
     try { localStorage.setItem("od-theme", theme); } catch (e) {}
   });
+  // Follow OS theme changes unless the visitor has chosen explicitly.
+  try {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (e) {
+      var chosen = false;
+      try { chosen = !!localStorage.getItem("od-theme"); } catch (x) {}
+      if (!chosen) { theme = e.matches ? "dark" : "light"; applyTheme(theme); }
+    });
+  } catch (e) {}
 
   // ---- Reveal on scroll ----
   // Only opt into the hidden initial state when we can animate out of it.
@@ -784,7 +818,7 @@
   // ---- Choreographed draw-in: each line traces in turn while its
   //      legend chip slides in alongside it. Order: fastest → bear. ----
   var ANIM_KEYS = ["fast", "baseA", "baseB", "bear"];
-  var ANIM_STEP = 1.4; // seconds between each line/chip
+  var ANIM_STEP = 0.7; // seconds between each line/chip
   if (!window.OD_REDUCED && "IntersectionObserver" in window) {
     var animPaths = ANIM_KEYS.map(function (k) { return document.getElementById("line-" + k); });
     animPaths.forEach(function (p) {
@@ -797,12 +831,11 @@
         if (!en.isIntersecting) return;
         io.disconnect();
         animPaths.forEach(function (p, i) {
-          p.style.transition = "stroke-dashoffset 1.9s ease " + (i * ANIM_STEP) + "s";
+          p.style.transition = "stroke-dashoffset 1.4s ease " + (i * ANIM_STEP) + "s";
           p.style.strokeDashoffset = "0";
-          p.addEventListener("transitionend", function () {
-            p.style.strokeDasharray = "none";
-            p.style.transition = "";
-          }, { once: true });
+          var clear = function () { p.style.strokeDasharray = "none"; p.style.transition = ""; };
+          p.addEventListener("transitionend", clear, { once: true });
+          setTimeout(clear, (i * ANIM_STEP + 1.4) * 1000 + 500);
         });
         ANIM_KEYS.forEach(function (k, i) {
           var chip = document.getElementById("leg-" + k);
@@ -1017,7 +1050,7 @@
     render();
   }
   camt.addEventListener("input", onCustom);
-  ccad.addEventListener("change", function () { if (camt.value) onCustom(); else { cadence = ccad.value; } });
+  ccad.addEventListener("change", function () { if (camt.value) onCustom(); else { cadence = ccad.value; render(); } });
 
   function syncInputs() {
     var customOn = !!camt.value;
@@ -1039,7 +1072,9 @@
     SCENARIOS.forEach(function (s) {
       var r = results[s.key];
       html += '<div class="scard' + (highlight === s.key ? " sel" : "") + '" data-key="' + s.key +
-        '" style="border-left-color:' + s.color + ";color:" + s.color + '">' +
+        '" role="button" tabindex="0" aria-pressed="' + (highlight === s.key ? "true" : "false") +
+        '" aria-label="' + s.short + ' scenario — toggle highlight on the chart"' +
+        ' style="border-left-color:' + s.color + ";color:" + s.color + '">' +
         '<div class="sc-name" style="color:' + s.color + '">' + s.short + "</div>" +
         '<div class="sc-end">ends ' + s.endLabel + " · " + r.buys + " buys · " + fmtUSD(r.invested) + " in</div>" +
         '<div class="sc-sats">' + fmtBTC(r.sats) + "</div>" +
@@ -1060,11 +1095,17 @@
     SCENARIOS.forEach(function (s) { snap[s.key] = results[s.key].sats; });
     prevSats = snap;
     Array.prototype.slice.call(scardsEl.children).forEach(function (el) {
-      el.addEventListener("click", function () {
+      function toggle() {
         var k = el.getAttribute("data-key");
         highlight = highlight === k ? null : k;
         renderCards();
         styleLines();
+        var focusEl = scardsEl.querySelector('.scard[data-key="' + k + '"]');
+        if (focusEl) focusEl.focus();
+      }
+      el.addEventListener("click", toggle);
+      el.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") { e.preventDefault(); toggle(); }
       });
     });
   }
@@ -1191,14 +1232,13 @@
           if (!en.isIntersecting) return;
           io.disconnect();
           paths.forEach(function (pp, i) {
-            pp.path.style.transition = "stroke-dashoffset 2.8s ease " + (i * 0.35) + "s";
+            pp.path.style.transition = "stroke-dashoffset 1.4s ease " + (i * 0.45) + "s";
             pp.path.style.strokeDashoffset = "0";
-            pp.dot.style.transition = "opacity 0.5s ease " + (2.4 + i * 0.35) + "s";
+            pp.dot.style.transition = "opacity 0.5s ease " + (1.4 + i * 0.45) + "s";
             pp.dot.style.opacity = "1";
-            pp.path.addEventListener("transitionend", function () {
-              pp.path.style.strokeDasharray = "none";
-              pp.path.style.transition = "";
-            }, { once: true });
+            var clr = (function (path) { return function () { path.style.strokeDasharray = "none"; path.style.transition = ""; }; })(pp.path);
+            pp.path.addEventListener("transitionend", clr, { once: true });
+            setTimeout(clr, (i * 0.45 + 1.4) * 1000 + 500);
           });
         });
       }, { threshold: 0.35 });
@@ -1299,15 +1339,17 @@
   if (!stage) return;
   var slides = Array.prototype.slice.call(stage.querySelectorAll(".rainbow-slide"));
   var dotsWrap = document.getElementById("rainbowDots");
+  var pauseBtn = document.getElementById("rainbowPause");
   if (slides.length < 2) return;
-  var i = 0, timer = null;
+  var i = 0, timer = null, paused = false;
   var REDUCED = window.OD_REDUCED;
 
   var dots = slides.map(function (s, idx) {
     var b = document.createElement("button");
+    b.type = "button";
     b.setAttribute("aria-label", "Show rainbow chart " + (idx + 1) + " of " + slides.length);
     if (idx === 0) b.className = "on";
-    b.addEventListener("click", function () { go(idx); restart(); });
+    b.addEventListener("click", function () { go(idx); run(); });
     dotsWrap.appendChild(b);
     return b;
   });
@@ -1317,12 +1359,26 @@
     i = (n + slides.length) % slides.length;
     slides[i].classList.add("is-on"); dots[i].classList.add("on");
   }
-  function start() { if (!REDUCED) timer = setInterval(function () { go(i + 1); }, 5000); }
-  function restart() { if (timer) clearInterval(timer); start(); }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  function run() { stop(); if (!REDUCED && !paused && !document.hidden) timer = setInterval(function () { go(i + 1); }, 5000); }
 
-  start();
-  stage.addEventListener("mouseenter", function () { if (timer) clearInterval(timer); });
-  stage.addEventListener("mouseleave", restart);
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", function () {
+      paused = !paused;
+      pauseBtn.setAttribute("aria-pressed", paused ? "true" : "false");
+      pauseBtn.textContent = paused ? "Play ▶" : "Pause ⏸";
+      run();
+    });
+  }
+
+  // Pause on hover and keyboard focus; resume on leave (unless the user paused).
+  stage.addEventListener("mouseenter", stop);
+  stage.addEventListener("mouseleave", run);
+  stage.addEventListener("focusin", stop);
+  stage.addEventListener("focusout", run);
+  document.addEventListener("visibilitychange", run);
+
+  run();
 })();
 </script>
 </body>
