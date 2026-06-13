@@ -1,6 +1,6 @@
 # DCA 110 · A Postcard from a Bitcoin Low
 
-One standalone page by Orange Dad, from the maker of [genxbitcoin.io](https://genxbitcoin.io). Local-first, no tracking, receipts always.
+One standalone page by Orange Dad. Local-first, no tracking, receipts always.
 
 **Live page:** https://orangedaddocs.github.io/dca-110/
 

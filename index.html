@@ -49,9 +49,9 @@
   /* === TOP NAV === */
   .top { border-bottom: 1px solid var(--border); background: var(--top-bg); backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 50; }
   .top__inner { max-width: 1100px; margin: 0 auto; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-  .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
-  .coin { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--btc); color: white; font-family: "Source Serif 4", Georgia, serif; font-size: 20px; font-weight: 600; box-shadow: 0 8px 24px rgba(247, 147, 26, 0.24); }
-  .brand__name { font-family: "Source Serif 4", Georgia, serif; font-size: 22px; font-weight: 600; letter-spacing: -0.005em; }
+  .brand { display: inline-flex; align-items: center; text-decoration: none; color: var(--text); min-width: 0; }
+  .masthead { font-family: "Source Serif 4", Georgia, serif; font-size: 17px; font-weight: 600; letter-spacing: -0.008em; line-height: 1.25; }
+  @media (max-width: 860px) { .masthead { font-size: 14px; } }
   .top__right { display: flex; align-items: center; gap: 24px; }
   .nav { display: flex; align-items: center; gap: 24px; color: var(--muted); font-size: 14px; font-weight: 500; }
   .nav a { color: inherit; text-decoration: none; transition: color 0.15s ease; }
@@ -63,6 +63,13 @@
   /* === HERO === */
   .hero { position: relative; overflow: hidden; background: radial-gradient(ellipse 70% 52% at 82% 88%, rgba(247, 147, 26, 0.22), transparent 62%), radial-gradient(circle at 38% 22%, rgba(70, 55, 110, 0.26), transparent 55%), linear-gradient(180deg, var(--night), var(--night-2) 52%, var(--plum)); color: white; }
   .hero::after { content: "₿"; position: absolute; right: -52px; bottom: -148px; color: rgba(247, 147, 26, 0.07); font-family: "Source Serif 4", Georgia, serif; font-size: 460px; font-weight: 600; line-height: 1; pointer-events: none; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; z-index: 1; }
+  .orb--1 { width: 460px; height: 460px; top: -140px; left: -100px; background: radial-gradient(circle, rgba(247, 147, 26, 0.4), transparent 70%); animation: drift1 30s ease-in-out infinite alternate; }
+  .orb--2 { width: 520px; height: 520px; top: 30%; right: -160px; background: radial-gradient(circle, rgba(124, 93, 200, 0.38), transparent 70%); animation: drift2 38s ease-in-out infinite alternate; }
+  .orb--3 { width: 340px; height: 340px; bottom: -120px; left: 32%; background: radial-gradient(circle, rgba(247, 147, 26, 0.26), transparent 70%); animation: drift3 26s ease-in-out infinite alternate; }
+  @keyframes drift1 { to { transform: translate(90px, 60px) scale(1.18); } }
+  @keyframes drift2 { to { transform: translate(-110px, -70px) scale(1.12); } }
+  @keyframes drift3 { to { transform: translate(70px, -50px) scale(1.22); } }
   .hero__inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 78px 28px 86px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.85fr); gap: 50px; align-items: center; }
   @media (max-width: 900px) { .hero__inner { grid-template-columns: 1fr; padding: 54px 28px 64px; gap: 36px; } }
   .eyebrow { display: inline-flex; align-items: center; gap: 12px; color: rgba(255, 255, 255, 0.62); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 22px; }
@@ -195,18 +202,27 @@
   .footer-line { background: var(--bg-2); border-top: 1px solid var(--border); padding: 64px 28px; transition: background 0.25s ease; }
   .footer-line__inner { max-width: 760px; margin: 0 auto; text-align: center; }
   .footer-line p { font-family: "Source Serif 4", Georgia, serif; font-size: 24px; font-style: italic; line-height: 1.5; color: var(--text); font-weight: 400; }
-  .colophon { max-width: 1100px; margin: 0 auto; padding: 30px 28px 52px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--faint); gap: 18px; flex-wrap: wrap; }
-  .colophon a { color: var(--muted); text-decoration: none; margin-right: 22px; }
-  .colophon a:hover { color: var(--text); }
 
   /* === REVEAL ANIMATION ===
      Hidden state only applies once JS adds html.anim — without JS
      (crawlers, reader modes) all content is visible by default. */
   html.anim .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.65s ease, transform 0.65s ease; }
   html.anim .reveal.in { opacity: 1; transform: none; }
+  /* === RABBIT HOLES === */
+  .holes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .holes { grid-template-columns: 1fr; } }
+  .hole { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px 26px; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+  .hole:hover { transform: translateY(-2px); border-color: rgba(247, 147, 26, 0.45); box-shadow: 0 14px 34px var(--shadow); }
+  .hole--featured { border: 1.5px solid rgba(247, 147, 26, 0.55); background: linear-gradient(180deg, var(--btc-soft), var(--card)); }
+  .hole__tag { font-size: 10.5px; font-weight: 700; color: var(--accent-text); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; }
+  .hole h3 { font-family: "Source Serif 4", Georgia, serif; font-size: 21px; font-weight: 600; letter-spacing: -0.008em; line-height: 1.2; margin: 0 0 8px; color: var(--text); }
+  .hole p { font-size: 14px; color: var(--muted); line-height: 1.65; margin: 0 0 14px; }
+  .hole__links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13.5px; font-weight: 600; }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .live-card__dot::before { animation: none; }
+    .orb { animation: none; }
   }
 </style>
 </head>
@@ -216,15 +232,13 @@
 <header class="top">
   <div class="top__inner">
     <a class="brand" href="#">
-      <span class="coin">₿</span>
-      <span class="brand__name">Orange Dad</span>
+      <span class="masthead">DCA 110: A Postcard from a Bitcoin Low</span>
     </a>
     <div class="top__right">
       <nav class="nav">
         <a href="#note">The note</a>
         <a href="#catch-up">Part one</a>
         <a href="#dca-110">Calculator</a>
-        <a href="https://genxbitcoin.io" target="_blank" rel="noopener">genxbitcoin.io</a>
       </nav>
       <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">☾</button>
     </div>
@@ -233,6 +247,9 @@
 
 <!-- =================== HERO =================== -->
 <section class="hero">
+  <div class="orb orb--1"></div>
+  <div class="orb orb--2"></div>
+  <div class="orb orb--3"></div>
   <div class="hero__inner">
     <div>
       <div class="eyebrow">June 2026 · 0.46x of trend · Not financial advice</div>
@@ -280,11 +297,10 @@
 <!-- =================== THE NOTE =================== -->
 <section class="section" id="note">
   <div class="prose reveal">
-    <p>It's Friday night. I've got a caffeine-free Diet Coke, a jug of water, and a couple hours before bed. Figured I'd do some math out loud.</p>
-    <p>Bitcoin and Nostr don't need another DCA calculator. I know that. But it's June 12th. The feed is a wall of FUD. The SpaceX IPO has people deciding between chasing that and stacking sound money, and Bitcoin just printed a fresh low near $61.5K. The headlines called it ugly. The trendline called it a sale. That gap was interesting enough to spend a Friday on.</p>
+    <p>Bitcoin and Nostr don't need another DCA calculator. I know that. But it's June 12th. The SpaceX IPO has people deciding between chasing that and stacking sound money, and Bitcoin just printed a fresh low near $61.5K. The headlines called it ugly. The trendline called it a sale. That gap was interesting enough to spend a Friday on.</p>
     <p>So here's what you're about to read. Two things.</p>
     <p><strong>One.</strong> We're a long way under the Power Law trendline right now, far enough that climbing back takes time. I had Claude and ChatGPT run that catch-up separately, and I'll show you where they agree and where they don't. More on that below.</p>
-    <p><strong>Two.</strong> A play on the number 110. There's a heated fight in Bitcoin this summer over BIP 110. I'm a proponent, and I'll be signaling for it once I'm through the next few weeks of work. That argument has all the voices it needs, so I just borrowed the number. Bitcoin's on sale, so what if you ran a DCA 110? Stack an extra $110 a month. Or a week, if you can swing it. I even ran the $110-a-day version, just to show how much a person can pile up in a window like this.</p>
+    <p><strong>Two.</strong> A play on the number 110. There's a heated fight in Bitcoin this summer over <a href="https://bip110.org/" target="_blank" rel="noopener">BIP 110</a>. I'm a proponent, and I'll be signaling for it once I'm through the next few weeks of work. Let's keep the stakes straight, though: this page is a toy. BIP 110 is not — it's the most important thing happening in Bitcoin this summer, and <a href="https://bip110.org/" target="_blank" rel="noopener">bip110.org</a> is the place to understand why. That argument has all the voices it needs, so I just borrowed the number. Bitcoin's on sale, so what if you ran a DCA 110? Stack an extra $110 a month. Or a week, if you can swing it. I even ran the $110-a-day version, just to show how much a person can pile up in a window like this.</p>
     <p>That's the whole idea. This is a good summer to be hustling.</p>
     <p>Maybe you'll find it useful. Maybe you'll skip it. It was fun to build, and it came together fast on the new Claude model, which still surprises me.</p>
     <div class="pullquote">Part one measures the sale. Part two prices your stack.</div>
@@ -466,11 +482,56 @@
     <p>It's also not a dare to stack more than you can. The tool works the same at $110 a month or $20 a month. The point isn't the size of the number, it's seeing what <em>time under the line</em> does when the number is honestly yours.</p>
 
     <hr>
-    <h2>The hardest-working dollars</h2>
-    <p>Every stacker carries a month they'd give anything to buy again. Maybe yours is November 2022, when the bottom printed near $15.5K and the whole world swore it was going lower, or maybe it's some gray afternoon in 2015 you didn't even notice while it was happening. And here's what I've finally made peace with: regret was never a knowledge problem. Everybody knew. The charts were free, the multiplier was public, and we still didn't stack, because knowing a window is open and feeling it are two very different things.</p>
-    <p>The hardest-working dollars never feel like it while you're stacking them. They feel terrifying, and that's exactly why they work so hard — the fear is the discount. A calm market at 1.0x sells you a fair price; a scared market at 0.46x sells you the same Bitcoin at half off and throws in the stomachache for free. 2015 felt like that, 2022 felt like that, and June 2026 feels like that this morning.</p>
-    <p>So this page does the one thing hindsight never could: it weighs your dollars before you spend them instead of after. In the slow scenario, an early dollar does the work of six late ones — a $110 buy in July 2026 carries a 7.75x multiple to trend, while the same buy in 2030 barely carries 1.2x. Stack weekly through the whole bear and the money you put in before 2028 is about a third of the dollars but more than half the Bitcoin. The cheap months aren't the consolation prize of the bear case — they're the prize.</p>
-    <p>Somewhere in 2030, somebody is going to look back at this exact summer — the fresh low, the scary headlines, the 0.46x — and either thank himself or rehearse the oldest line in Bitcoin: <em>I knew, and I didn't.</em> That's the only thing this calculator actually computes — which one of those two you're going to be.</p>
+    <p>Every Bitcoiner can look back at a month they wish they could have bought again. This page is just the math for the next one.</p>
+  </div>
+</section>
+
+<!-- =================== RABBIT HOLES =================== -->
+<section class="section-band">
+  <div class="section">
+    <div class="section__head reveal">
+      <div class="section__eyebrow">Before you go</div>
+      <h2 class="section__title">Other rabbit holes worth your summer</h2>
+      <p class="dek">Things I keep sending people. None of them are mine, and none of them pay me.</p>
+    </div>
+    <div class="holes reveal">
+      <div class="hole hole--featured">
+        <div class="hole__tag">The important one</div>
+        <h3>BIP 110</h3>
+        <p>The fork fight this whole page borrowed its number from, and the most important thing happening in Bitcoin this summer. If you only go down one hole, make it this one.</p>
+        <div class="hole__links"><a href="https://bip110.org/" target="_blank" rel="noopener">bip110.org →</a></div>
+      </div>
+      <div class="hole">
+        <div class="hole__tag">My favorite site</div>
+        <h3>bennet.org</h3>
+        <p>The best Bitcoin site I've found in years — the Rainbow Chart lives here too. Start with his plain-English guide to what Bitcoin actually is, then wander.</p>
+        <div class="hole__links"><a href="https://bennet.org/" target="_blank" rel="noopener">bennet.org →</a><a href="https://bennet.org/learn/what-is-bitcoin/" target="_blank" rel="noopener">What is Bitcoin →</a></div>
+      </div>
+      <div class="hole">
+        <div class="hole__tag">Hashrate</div>
+        <h3>Rent Some Hash</h3>
+        <p>Renting hash rate gets talked about a lot, but nobody shows you how to actually do it. This resource is awesome.</p>
+        <div class="hole__links"><a href="https://rentsomehash.com/" target="_blank" rel="noopener">rentsomehash.com →</a></div>
+      </div>
+      <div class="hole">
+        <div class="hole__tag">Mining</div>
+        <h3>Pool mining, explained</h3>
+        <p>nomadshiba's guide to pool mining is the clearest walkthrough I've read. Published on Nostr, where it belongs.</p>
+        <div class="hole__links"><a href="https://yakihonne.com/article/s/_@nomadshiba.me/kLmYhoWJ1oPtsWMyc6XqC" target="_blank" rel="noopener">Read the guide →</a></div>
+      </div>
+      <div class="hole">
+        <div class="hole__tag">Health + sats</div>
+        <h3>Sound HSA</h3>
+        <p>If you're in the US and qualify for a health savings account, you can stack it in Bitcoin. Worth twenty minutes of your time.</p>
+        <div class="hole__links"><a href="https://soundhsa.com/" target="_blank" rel="noopener">soundhsa.com →</a></div>
+      </div>
+      <div class="hole">
+        <div class="hole__tag">AI</div>
+        <h3>AI Made Easy with Matt Hill</h3>
+        <p>The Start9 founder teaching hands-on AI at The Space in Denver — OpenClaw and more. Both sessions are up.</p>
+        <div class="hole__links"><a href="https://www.youtube.com/watch?v=Fz42Z1xkVuE" target="_blank" rel="noopener">Session one →</a><a href="https://www.youtube.com/watch?v=kOkNTV8z8b8" target="_blank" rel="noopener">Session two →</a></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -479,15 +540,6 @@
   <div class="footer-line__inner reveal">
     <p>Not advice. Just a dad doing the math out loud.<br>— Orange Dad</p>
   </div>
-</div>
-<div class="colophon">
-  <div>
-    <a href="#note">The note</a>
-    <a href="#catch-up">Part one</a>
-    <a href="#dca-110">Calculator</a>
-    <a href="https://genxbitcoin.io" target="_blank" rel="noopener">genxbitcoin.io</a>
-  </div>
-  <div>© Orange Dad · Local-first · No tracking · Receipts always</div>
 </div>
 
 <!-- =================== THEME + REVEAL =================== -->
@@ -672,7 +724,7 @@
         if (!en.isIntersecting) return;
         io.disconnect();
         paths.forEach(function (p, i) {
-          p.style.transition = "stroke-dashoffset 1.4s ease " + (i * 0.18) + "s";
+          p.style.transition = "stroke-dashoffset 2.8s ease " + (i * 0.35) + "s";
           p.style.strokeDashoffset = "0";
           p.addEventListener("transitionend", function () {
             p.style.strokeDasharray = "none";
@@ -854,7 +906,7 @@
   // ---- Count-up tween ----
   function tweenBTC(el, from, to) {
     if (window.OD_REDUCED || from === to) { el.textContent = fmtBTC(to); return; }
-    var t0 = performance.now(), dur = 450;
+    var t0 = performance.now(), dur = 1100;
     function frame(now) {
       var p = Math.min(1, (now - t0) / dur);
       var e = 1 - Math.pow(1 - p, 3);
@@ -1060,9 +1112,9 @@
           if (!en.isIntersecting) return;
           io.disconnect();
           paths.forEach(function (pp, i) {
-            pp.path.style.transition = "stroke-dashoffset 1.4s ease " + (i * 0.18) + "s";
+            pp.path.style.transition = "stroke-dashoffset 2.8s ease " + (i * 0.35) + "s";
             pp.path.style.strokeDashoffset = "0";
-            pp.dot.style.transition = "opacity 0.4s ease " + (1.1 + i * 0.18) + "s";
+            pp.dot.style.transition = "opacity 0.5s ease " + (2.4 + i * 0.35) + "s";
             pp.dot.style.opacity = "1";
             pp.path.addEventListener("transitionend", function () {
               pp.path.style.strokeDasharray = "none";
