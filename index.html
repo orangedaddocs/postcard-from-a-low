@@ -62,7 +62,11 @@
 
   /* === HERO === */
   .hero { position: relative; overflow: hidden; background: radial-gradient(ellipse 70% 52% at 82% 88%, rgba(247, 147, 26, 0.22), transparent 62%), radial-gradient(circle at 38% 22%, rgba(70, 55, 110, 0.26), transparent 55%), linear-gradient(180deg, var(--night), var(--night-2) 52%, var(--plum)); color: white; }
-  .hero::after { content: "₿"; position: absolute; right: -52px; bottom: -148px; color: rgba(247, 147, 26, 0.07); font-family: "Source Serif 4", Georgia, serif; font-size: 460px; font-weight: 600; line-height: 1; pointer-events: none; }
+  .hero::after { content: "₿"; position: absolute; right: -52px; bottom: -148px; color: rgba(247, 147, 26, 0.17); font-family: "Source Serif 4", Georgia, serif; font-size: 460px; font-weight: 600; line-height: 1; pointer-events: none; animation: btcbreathe 9s ease-in-out infinite alternate; }
+  @keyframes btcbreathe {
+    from { opacity: 0.22; transform: scale(1); }
+    to   { opacity: 1;    transform: scale(1.035); }
+  }
   .orb { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; z-index: 1; }
   .orb--1 { width: 460px; height: 460px; top: -140px; left: -100px; background: radial-gradient(circle, rgba(247, 147, 26, 0.4), transparent 70%); animation: drift1 30s ease-in-out infinite alternate; }
   .orb--2 { width: 520px; height: 520px; top: 30%; right: -160px; background: radial-gradient(circle, rgba(124, 93, 200, 0.38), transparent 70%); animation: drift2 38s ease-in-out infinite alternate; }
@@ -71,23 +75,18 @@
   @keyframes drift2 { to { transform: translate(-110px, -70px) scale(1.12); } }
   @keyframes drift3 { to { transform: translate(70px, -50px) scale(1.22); } }
 
-  /* Small circle-stars twinkling over the hero */
-  .sparks { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
-  .sparks span { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.5); animation: twinkle 7s ease-in-out infinite alternate; }
-  .sparks span:nth-child(1)  { width: 4px; height: 4px; top: 18%; left: 8%;  animation-duration: 6s; }
-  .sparks span:nth-child(2)  { width: 3px; height: 3px; top: 32%; left: 22%; animation-duration: 9s;  animation-delay: 1.4s; }
-  .sparks span:nth-child(3)  { width: 5px; height: 5px; top: 12%; left: 38%; background: rgba(247, 147, 26, 0.6); animation-duration: 7.5s; animation-delay: 0.8s; }
-  .sparks span:nth-child(4)  { width: 3px; height: 3px; top: 64%; left: 14%; animation-duration: 8s;  animation-delay: 2.2s; }
-  .sparks span:nth-child(5)  { width: 4px; height: 4px; top: 76%; left: 42%; background: rgba(247, 147, 26, 0.5); animation-duration: 10s; animation-delay: 3s; }
-  .sparks span:nth-child(6)  { width: 3px; height: 3px; top: 22%; left: 58%; animation-duration: 6.5s; animation-delay: 1s; }
-  .sparks span:nth-child(7)  { width: 5px; height: 5px; top: 58%; left: 66%; animation-duration: 9.5s; animation-delay: 2.6s; }
-  .sparks span:nth-child(8)  { width: 3px; height: 3px; top: 14%; left: 78%; background: rgba(247, 147, 26, 0.55); animation-duration: 8.5s; animation-delay: 0.4s; }
-  .sparks span:nth-child(9)  { width: 4px; height: 4px; top: 82%; left: 84%; animation-duration: 7s;  animation-delay: 1.8s; }
-  .sparks span:nth-child(10) { width: 3px; height: 3px; top: 44%; left: 92%; animation-duration: 11s; animation-delay: 3.4s; }
-  .sparks span:nth-child(11) { width: 64px; height: 64px; top: 10%; left: 64%; background: transparent; border: 1px solid rgba(247, 147, 26, 0.25); animation: ringfloat 16s ease-in-out infinite alternate; }
-  .sparks span:nth-child(12) { width: 110px; height: 110px; top: 66%; left: 4%; background: transparent; border: 1px solid rgba(255, 255, 255, 0.14); animation: ringfloat 22s ease-in-out infinite alternate-reverse; }
-  @keyframes twinkle { 0% { opacity: 0.12; transform: translateY(0) scale(0.9); } 50% { opacity: 0.75; } 100% { opacity: 0.18; transform: translateY(-16px) scale(1.08); } }
-  @keyframes ringfloat { from { transform: translate(0, 0); } to { transform: translate(16px, -20px); } }
+  /* Concentric sonar rings off the left side, circle.so style */
+  .ripples { position: absolute; left: -180px; top: 50%; width: 640px; height: 640px; margin-top: -320px; pointer-events: none; z-index: 1; }
+  .ripples span { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(247, 147, 26, 0.35); opacity: 0; animation: ripple 16s linear infinite; }
+  .ripples span:nth-child(2) { animation-delay: 4s; }
+  .ripples span:nth-child(3) { animation-delay: 8s; }
+  .ripples span:nth-child(4) { animation-delay: 12s; }
+  @keyframes ripple {
+    0%   { transform: scale(0.35); opacity: 0; }
+    12%  { opacity: 0.5; }
+    65%  { opacity: 0.15; }
+    100% { transform: scale(1.45); opacity: 0; }
+  }
   .hero__inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 78px 28px 86px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.85fr); gap: 50px; align-items: center; }
   @media (max-width: 900px) { .hero__inner { grid-template-columns: 1fr; padding: 54px 28px 64px; gap: 36px; } }
   .eyebrow { display: inline-flex; align-items: center; gap: 12px; color: rgba(255, 255, 255, 0.62); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 22px; }
@@ -241,7 +240,10 @@
     html { scroll-behavior: auto; }
     .live-card__dot::before { animation: none; }
     .orb { animation: none; }
-    .sparks span { animation: none; opacity: 0.3; }
+    .hero::after { animation: none; }
+    .ripples span { animation: none; opacity: 0.18; transform: scale(1); }
+    .ripples span:nth-child(2), .ripples span:nth-child(4) { display: none; }
+    .ripples span:nth-child(3) { transform: scale(0.7); }
   }
 </style>
 </head>
@@ -269,7 +271,7 @@
   <div class="orb orb--1"></div>
   <div class="orb orb--2"></div>
   <div class="orb orb--3"></div>
-  <div class="sparks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="ripples" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
   <div class="hero__inner">
     <div>
       <div class="eyebrow">June 2026 · 0.46x of trend · Not financial advice</div>
