@@ -190,9 +190,6 @@
   .rainbow-dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--border); cursor: pointer; padding: 0; transition: background 0.2s ease, transform 0.2s ease; }
   .rainbow-dots button:hover { background: var(--faint); }
   .rainbow-dots button.on { background: var(--btc); transform: scale(1.3); }
-  .rainbow-controls { display: flex; justify-content: center; margin-top: 4px; }
-  .rainbow-pause { background: none; border: none; color: var(--faint); font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 10px; border-radius: 6px; }
-  .rainbow-pause:hover { color: var(--text); }
 
   /* === TOOL: presets === */
   .picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
@@ -397,7 +394,6 @@
         </a>
       </div>
       <div class="rainbow-dots" id="rainbowDots"></div>
-      <div class="rainbow-controls"><button type="button" class="rainbow-pause" id="rainbowPause" aria-pressed="false">Pause ⏸</button></div>
       <div class="chart-foot">Three independent versions of the same idea, none of them mine. Screenshots link to the live charts. The chart below is that idea pointed forward — from "where has price been" to "how long might it stay cheap."</div>
     </div>
 
@@ -553,8 +549,6 @@
     <p>And let me read the obvious out loud, because the page keeps not saying it: stacking into a 50%-off market means buying something that is, right now, falling. It can fall further, for longer than this model thinks, or the model can be wrong about the whole thing. Only stack money you won't need for years and can watch go redder before it goes anywhere. The discount is real and so is the risk — they're the same sentence.</p>
 
     <hr>
-    <p>So if the math moved you, don't let it evaporate by morning. Open your exchange or your wallet and set the recurring buy — $110 or $20, weekly or monthly, whatever's honestly yours — and let it run while the multiplier is this low. The cheap months don't wait for you to feel ready.</p>
-    <p>Every Bitcoiner can look back at a month they wish they could have bought again. This page is just the math for the next one.</p>
   </div>
 </section>
 
@@ -818,7 +812,7 @@
   // ---- Choreographed draw-in: each line traces in turn while its
   //      legend chip slides in alongside it. Order: fastest → bear. ----
   var ANIM_KEYS = ["fast", "baseA", "baseB", "bear"];
-  var ANIM_STEP = 0.7; // seconds between each line/chip
+  var ANIM_STEP = 1.4; // seconds between each line/chip
   if (!window.OD_REDUCED && "IntersectionObserver" in window) {
     var animPaths = ANIM_KEYS.map(function (k) { return document.getElementById("line-" + k); });
     animPaths.forEach(function (p) {
@@ -831,11 +825,11 @@
         if (!en.isIntersecting) return;
         io.disconnect();
         animPaths.forEach(function (p, i) {
-          p.style.transition = "stroke-dashoffset 1.4s ease " + (i * ANIM_STEP) + "s";
+          p.style.transition = "stroke-dashoffset 2.8s ease " + (i * ANIM_STEP) + "s";
           p.style.strokeDashoffset = "0";
           var clear = function () { p.style.strokeDasharray = "none"; p.style.transition = ""; };
           p.addEventListener("transitionend", clear, { once: true });
-          setTimeout(clear, (i * ANIM_STEP + 1.4) * 1000 + 500);
+          setTimeout(clear, (i * ANIM_STEP + 2.8) * 1000 + 500);
         });
         ANIM_KEYS.forEach(function (k, i) {
           var chip = document.getElementById("leg-" + k);
