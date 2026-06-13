@@ -1333,9 +1333,8 @@
   if (!stage) return;
   var slides = Array.prototype.slice.call(stage.querySelectorAll(".rainbow-slide"));
   var dotsWrap = document.getElementById("rainbowDots");
-  var pauseBtn = document.getElementById("rainbowPause");
   if (slides.length < 2) return;
-  var i = 0, timer = null, paused = false;
+  var i = 0, timer = null;
   var REDUCED = window.OD_REDUCED;
 
   var dots = slides.map(function (s, idx) {
@@ -1354,18 +1353,9 @@
     slides[i].classList.add("is-on"); dots[i].classList.add("on");
   }
   function stop() { if (timer) { clearInterval(timer); timer = null; } }
-  function run() { stop(); if (!REDUCED && !paused && !document.hidden) timer = setInterval(function () { go(i + 1); }, 5000); }
+  function run() { stop(); if (!REDUCED && !document.hidden) timer = setInterval(function () { go(i + 1); }, 5000); }
 
-  if (pauseBtn) {
-    pauseBtn.addEventListener("click", function () {
-      paused = !paused;
-      pauseBtn.setAttribute("aria-pressed", paused ? "true" : "false");
-      pauseBtn.textContent = paused ? "Play ▶" : "Pause ⏸";
-      run();
-    });
-  }
-
-  // Pause on hover and keyboard focus; resume on leave (unless the user paused).
+  // Pause on hover and keyboard focus; resume on leave.
   stage.addEventListener("mouseenter", stop);
   stage.addEventListener("mouseleave", run);
   stage.addEventListener("focusin", stop);
