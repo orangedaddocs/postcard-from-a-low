@@ -11,4 +11,6 @@ Two parts on one link:
 
 The whole thing is a single self-contained HTML file ([index.html](index.html)) with no build step and no external dependencies — fonts are self-hosted in `assets/fonts/`, so the page makes zero third-party requests. Open it in a browser and it works.
 
-Not financial advice. Just a dad doing the math out loud.
+MIT licensed — genuinely do whatever you want with it. Fork it, run your own numbers, build your own. I built it for myself, and it's a gift to anyone it's useful to.
+
+Not financial advice. Just a dad going through the math for himself.

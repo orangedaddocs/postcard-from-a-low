@@ -238,6 +238,8 @@
   .footer-line { background: var(--bg-2); border-top: 1px solid var(--border); padding: 64px 28px; transition: background 0.25s ease; }
   .footer-line__inner { max-width: 760px; margin: 0 auto; text-align: center; }
   .footer-line p { font-family: "Source Serif 4", Georgia, serif; font-size: 24px; font-style: italic; line-height: 1.5; color: var(--text); font-weight: 400; }
+  .footer-line .footer-src { font-family: "IBM Plex Sans", sans-serif; font-size: 13.5px; font-style: normal; font-weight: 400; color: var(--faint); line-height: 1.65; margin: 24px auto 0; max-width: 600px; }
+  .footer-line .footer-src a { color: var(--accent-text); font-weight: 600; }
 
   /* === REVEAL ANIMATION ===
      Hidden state only applies once JS adds html.anim — without JS
@@ -385,8 +387,8 @@
           <span class="rainbow-cap"><b>blockchaincenter.net</b> · the version most people have seen <span class="rainbow-go">open →</span></span>
         </a>
         <a class="rainbow-slide" href="https://bennet.org/resources/bitcoin-rainbow-chart/" target="_blank" rel="noopener">
-          <img src="assets/rainbow-bennet.png" alt="The Bitcoin Rainbow Chart on bennet.org" loading="lazy" width="1400" height="667" onerror="this.style.display='none'">
-          <span class="rainbow-cap"><b>bennet.org</b> · my favorite Bitcoin site, far and away <span class="rainbow-go">open →</span></span>
+          <img src="assets/rainbow-bennet.png" alt="The Bitcoin Rainbow Chart on Bennet.org" loading="lazy" width="1400" height="667" onerror="this.style.display='none'">
+          <span class="rainbow-cap"><b>Bennet.org</b> · my favorite Bitcoin site, far and away <span class="rainbow-go">open →</span></span>
         </a>
         <a class="rainbow-slide" href="https://charts.bitbo.io/rainbow/" target="_blank" rel="noopener">
           <img src="assets/rainbow-bitbo.png" alt="The Bitcoin Rainbow Chart on charts.bitbo.io" loading="lazy" width="1400" height="667" onerror="this.style.display='none'">
@@ -561,9 +563,9 @@
       </div>
       <div class="hole">
         <div class="hole__tag">My favorite site</div>
-        <h3>bennet.org</h3>
+        <h3>Bennet.org</h3>
         <p>The best Bitcoin site I've found in years — the Rainbow Chart lives here too. Start with his plain-English guide to what Bitcoin actually is, then wander.</p>
-        <div class="hole__links"><a href="https://bennet.org/" target="_blank" rel="noopener">bennet.org →</a><a href="https://bennet.org/learn/what-is-bitcoin/" target="_blank" rel="noopener">What is Bitcoin →</a></div>
+        <div class="hole__links"><a href="https://bennet.org/" target="_blank" rel="noopener">Bennet.org →</a><a href="https://bennet.org/learn/what-is-bitcoin/" target="_blank" rel="noopener">What is Bitcoin →</a></div>
       </div>
       <div class="hole">
         <div class="hole__tag">Mining</div>
@@ -599,6 +601,7 @@
 <footer class="footer-line">
   <div class="footer-line__inner reveal">
     <p>Not advice. Just a dad going through the math for himself.<br>— Orange Dad</p>
+    <p class="footer-src">Source's on <a href="https://github.com/orangedaddocs/postcard-from-a-low" target="_blank" rel="noopener">GitHub</a>, MIT licensed — so genuinely do whatever you want with it. Fork it, run your own numbers, build your own. I made it for myself; it's a gift to anyone it's useful to.</p>
   </div>
 </footer>
 
